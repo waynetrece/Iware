@@ -998,25 +998,99 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 /* ═══════════════════════════════════════════
    SLIDE 9: PORTFOLIO — SCREENSHOT CARDS
    ═══════════════════════════════════════════ */
-.portfolio-grid {
+/* ═══════════════════════════════════════════
+   3D PANORAMIC SLIDE
+   ═══════════════════════════════════════════ */
+.vr-layout {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
   margin-top: 2rem;
+  align-items: start;
+}
+
+.vr-features { display: flex; flex-direction: column; gap: 18px; }
+
+.vr-feat {
+  display: flex; gap: 1rem; align-items: flex-start;
+  padding: 1rem 1.2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: border-color 0.3s;
+}
+.vr-feat:hover { border-color: rgba(77,175,124,0.3); }
+.vr-feat__icon { width: 36px; height: 36px; flex-shrink: 0; color: var(--green); }
+.vr-feat__title { font-weight: 600; margin-bottom: 0.2rem; }
+.vr-feat__desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; }
+
+.vr-showcase {
+  display: flex; flex-direction: column; gap: 16px;
+}
+
+.vr-demo {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+.vr-demo:hover { border-color: rgba(77,175,124,0.3); }
+
+.vr-demo__img {
+  width: 100%; aspect-ratio: 16/9;
+  background: linear-gradient(135deg, #141c2a, #0d1520);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--green); font-size: 3rem; position: relative; overflow: hidden;
+}
+
+.vr-demo__img::after {
+  content: '360°'; position: absolute;
+  font-family: var(--font-en); font-weight: 700; font-size: 2.5rem;
+  opacity: 0.15;
+}
+
+.vr-demo__body { padding: 0.8rem 1rem; }
+.vr-demo__name { font-weight: 600; font-size: 0.9rem; }
+.vr-demo__tag { font-size: 0.78rem; color: var(--green); margin-top: 2px; }
+
+/* ═══════════════════════════════════════════
+   PORTFOLIO — SPLIT LAYOUT
+   ═══════════════════════════════════════════ */
+.pf-split {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 40px;
+  margin-top: 2rem;
+  align-items: start;
+  height: calc(100% - 120px);
+}
+
+.pf-side { padding-top: 0.5rem; }
+.pf-side__label { font-family: var(--font-en); font-size: 0.75rem; letter-spacing: 0.12em; color: var(--green); text-transform: uppercase; margin-bottom: 0.5rem; }
+.pf-side__title { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.6rem; }
+.pf-side__divider { width: 36px; height: 2px; background: var(--green); margin-bottom: 1rem; }
+.pf-side__desc { font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; }
+.pf-side__more { display: inline-block; margin-top: 1.5rem; font-family: var(--font-en); font-size: 0.82rem; color: var(--green); border-bottom: 1px solid rgba(77,175,124,0.3); }
+
+.pf-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  align-content: start;
 }
 
 .pf-card {
   background: var(--bg-card);
-  border-radius: 12px;
+  border-radius: 10px;
   overflow: hidden;
   border: 1px solid var(--border);
   transition: transform 0.3s, border-color 0.3s;
 }
 
 .pf-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(77,175,124,0.4);
-  box-shadow: var(--neon-shadow-strong);
+  transform: translateY(-3px);
+  border-color: rgba(77,175,124,0.35);
 }
 
 .pf-card__img {
@@ -1024,7 +1098,6 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   aspect-ratio: 16 / 10;
   background: linear-gradient(135deg, #141c2a, #0d1520);
   overflow: hidden;
-  position: relative;
 }
 
 .pf-card__img img {
@@ -1040,38 +1113,43 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 }
 
 .pf-card__body {
-  padding: 1.1rem 1.25rem;
-  text-align: center;
+  padding: 0.7rem 0.9rem;
+}
+
+.pf-card__url {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-family: var(--font-en);
+  letter-spacing: 0.02em;
+  margin-bottom: 0.25rem;
 }
 
 .pf-card__name {
-  font-size: 1.15rem;
-  font-weight: 700;
-  margin-bottom: 0.6rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.pf-card__desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+  margin-bottom: 0.4rem;
 }
 
 .pf-card__tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  justify-content: center;
-  margin-bottom: 0.7rem;
+  gap: 4px;
 }
 
 .pf-tag {
-  font-size: 0.78rem;
-  padding: 3px 10px;
-  border-radius: 12px;
+  font-size: 0.68rem;
+  padding: 2px 8px;
+  border-radius: 10px;
   background: var(--green-light);
   color: var(--green);
   font-weight: 500;
-}
-
-.pf-card__url {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  font-family: var(--font-en);
-  letter-spacing: 0.02em;
 }
 
 /* ═══════════════════════════════════════════
@@ -1301,6 +1379,10 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
   .ts-grid { grid-template-columns: 1fr; }
   .phi-grid { gap: 16px; }
+  .vr-layout { grid-template-columns: 1fr; }
+  .pf-split { grid-template-columns: 1fr; }
+  .pf-side { padding-bottom: 0; }
+  .pf-cards { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 768px) {
@@ -1314,7 +1396,10 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   .badges-grid { grid-template-columns: 1fr 1fr; }
   .svc-grid { grid-template-columns: 1fr; }
   .steps-grid { grid-template-columns: 1fr 1fr; }
-  .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+  .pf-split { grid-template-columns: 1fr; gap: 16px; }
+  .pf-cards { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .pf-card__desc { display: none; }
+  .vr-layout { grid-template-columns: 1fr; gap: 20px; }
   .hero__meta { flex-direction: column; gap: 0.4rem; }
   .compare-table { font-size: 0.78rem; }
   .cta__footer { flex-direction: column; align-items: center; }
@@ -1340,6 +1425,7 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   <div class="topnav__menu" id="navMenu">
     <button class="topnav__btn topnav__btn--active" data-nav="about">關於馬亞</button>
     <button class="topnav__btn" data-nav="services">服務項目</button>
+    <button class="topnav__btn" data-nav="vr360">3D 環景</button>
     <button class="topnav__btn" data-nav="techsec">技術資安</button>
     <button class="topnav__btn" data-nav="compare">套版 vs 客製</button>
     <button class="topnav__btn" data-nav="process">合作流程</button>
@@ -1516,6 +1602,46 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
       </div>
     </section>
 
+    <!-- ──── SLIDE 05: 3D PANORAMIC ──── -->
+    <section class="slide slide--alt" data-section="vr360">
+      <div class="slide__inner">
+        <p class="label anim en">3D VIRTUAL TOUR</p>
+        <h2 class="title anim">3D 環景拍攝</h2>
+        <div class="divider anim"></div>
+        <p class="subtitle anim">360° 沉浸式虛擬實境導覽，讓訪客身歷其境感受空間魅力</p>
+        <div class="vr-layout">
+          <div class="vr-features">
+            <div class="vr-feat anim">
+              <div class="vr-feat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+              <div><div class="vr-feat__title">Google 商家街景</div><div class="vr-feat__desc">整合 Google Maps 街景服務，客戶搜尋即可線上看店面環境，提升到訪意願與信任感</div></div>
+            </div>
+            <div class="vr-feat anim">
+              <div class="vr-feat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M12 17v4"/><path d="M8 21h8"/><circle cx="12" cy="10" r="3"/></svg></div>
+              <div><div class="vr-feat__title">空間 / 展場環景</div><div class="vr-feat__desc">飯店、餐廳、展覽空間、辦公室等室內環境，全景拍攝讓遠端訪客也能完整瀏覽</div></div>
+            </div>
+            <div class="vr-feat anim">
+              <div class="vr-feat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+              <div><div class="vr-feat__title">互動式虛擬導覽</div><div class="vr-feat__desc">支援熱點導航、資訊標籤、自動播放路徑，可嵌入網站或社群平台分享</div></div>
+            </div>
+            <div class="vr-feat anim">
+              <div class="vr-feat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+              <div><div class="vr-feat__title">多平台嵌入</div><div class="vr-feat__desc">一次拍攝，可嵌入官網、Google 商家、Facebook、LINE 等多平台曝光</div></div>
+            </div>
+          </div>
+          <div class="vr-showcase">
+            <div class="vr-demo anim">
+              <div class="vr-demo__img"><svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.5" width="60" height="60" opacity="0.3"><circle cx="40" cy="40" r="30"/><ellipse cx="40" cy="40" rx="15" ry="30"/><line x1="10" y1="40" x2="70" y2="40"/><line x1="40" y1="10" x2="40" y2="70"/></svg></div>
+              <div class="vr-demo__body"><div class="vr-demo__name">飯店 / 民宿空間導覽</div><div class="vr-demo__tag">Google 街景整合</div></div>
+            </div>
+            <div class="vr-demo anim">
+              <div class="vr-demo__img"><svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.5" width="60" height="60" opacity="0.3"><rect x="10" y="15" width="60" height="50" rx="4"/><path d="M10 30h60"/><circle cx="25" cy="45" r="8"/><circle cx="55" cy="45" r="8"/></svg></div>
+              <div class="vr-demo__body"><div class="vr-demo__name">展覽 / 活動空間</div><div class="vr-demo__tag">互動式熱點導覽</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ──── SLIDE 06: TECH & SECURITY ──── -->
     <section class="slide slide--dark" data-section="techsec">
       <div class="slide__inner centered">
@@ -1530,8 +1656,11 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
               <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">每頁獨立 Meta</div><div class="ts-item__desc">Title / Keywords / Description 個別設定</div></div></li>
               <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">自訂 URL 結構</div><div class="ts-item__desc">語意化網址，三層結構搜尋友善</div></div></li>
               <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">Canonical URL</div><div class="ts-item__desc">防重複內容，集中權重</div></div></li>
+              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">Sitemap.xml 自動產生</div><div class="ts-item__desc">主動提交搜尋引擎，加速頁面收錄</div></div></li>
+              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">OG 社群預覽標籤</div><div class="ts-item__desc">LINE / FB 分享自動帶標題、圖片、說明</div></div></li>
               <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">GA + Search Console</div><div class="ts-item__desc">Google 分析工具完整整合</div></div></li>
               <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">FB 像素追蹤</div><div class="ts-item__desc">再行銷廣告精準投放</div></div></li>
+              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">結構化資料 Schema</div><div class="ts-item__desc">組織、活動、文章等結構化標記，搜尋結果豐富呈現</div></div></li>
             </ul>
           </div>
           <div class="ts-block anim">
@@ -1643,60 +1772,90 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
       </div>
     </section>
 
-    <!-- ──── SLIDE 09: PORTFOLIO ──── -->
+    <!-- ──── SLIDE 10: PORTFOLIO 1 — 公協會 / 學術 ──── -->
     <section class="slide slide--alt" data-section="cases">
-      <div class="slide__inner centered">
-        <p class="label anim en">PORTFOLIO</p>
-        <h2 class="title anim">精選案例</h2>
-        <div class="divider anim"></div>
-        <p class="subtitle anim">深耕各產業，每個專案都是根據客戶品牌定位量身打造</p>
-        <div class="portfolio-grid">
-          <div class="pf-card anim">
-            <div class="pf-card__img"><img src="https://image.thum.io/get/width/600/crop/375/https://apsc-tsoc2026.tw" alt="中華民國心臟學會" loading="lazy"></div>
-            <div class="pf-card__body">
-              <div class="pf-card__name">中華民國心臟學會</div>
-              <div class="pf-card__tags"><span class="pf-tag">會員系統</span><span class="pf-tag">投審稿</span><span class="pf-tag">報名系統</span><span class="pf-tag">收據套印</span></div>
-              <div class="pf-card__url">apsc-tsoc2026.tw</div>
+      <div class="slide__inner">
+        <div class="pf-split">
+          <div class="pf-side anim">
+            <div class="pf-side__label">Portfolio</div>
+            <div class="pf-side__title">公協會 &amp; 學術機構</div>
+            <div class="pf-side__divider"></div>
+            <div class="pf-side__desc">深耕公協會、學會、政府機關網站建置，累積 30 年同類型產業經驗，理解會員管理、活動報名、積分制度等核心需求</div>
+            <a class="pf-side__more" href="https://www.iware.com.tw/works.html" target="_blank">iware.com.tw/works &rarr;</a>
+          </div>
+          <div class="pf-cards">
+            <div class="pf-card anim">
+              <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://apsc-tsoc2026.tw" alt="中華民國心臟學會" loading="lazy"></div>
+              <div class="pf-card__body"><div class="pf-card__url en">apsc-tsoc2026.tw</div><div class="pf-card__name">中華民國心臟學會</div><div class="pf-card__desc">會員系統、投審稿平台、報名與收據套印</div><div class="pf-card__tags"><span class="pf-tag">學會</span><span class="pf-tag">會員系統</span></div></div>
+            </div>
+            <div class="pf-card anim">
+              <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://www.ot.org.tw" alt="台灣職能治療學會" loading="lazy"></div>
+              <div class="pf-card__body"><div class="pf-card__url en">ot.org.tw</div><div class="pf-card__name">台灣職能治療學會</div><div class="pf-card__desc">課程報名、積分管理、期刊投稿、會員繳費</div><div class="pf-card__tags"><span class="pf-tag">學會</span><span class="pf-tag">積分系統</span></div></div>
+            </div>
+            <div class="pf-card anim">
+              <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://www.tsh.org.tw" alt="台灣高血壓學會" loading="lazy"></div>
+              <div class="pf-card__body"><div class="pf-card__url en">tsh.org.tw</div><div class="pf-card__name">台灣高血壓學會</div><div class="pf-card__desc">衛教影音、活動直播、學術資源下載</div><div class="pf-card__tags"><span class="pf-tag">學會</span><span class="pf-tag">影音平台</span></div></div>
+            </div>
+            <div class="pf-card anim">
+              <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://www.tpvma.org.tw" alt="臺北市獸醫師公會" loading="lazy"></div>
+              <div class="pf-card__body"><div class="pf-card__url en">tpvma.org.tw</div><div class="pf-card__name">臺北市獸醫師公會</div><div class="pf-card__desc">會員專區、會費繳納、活動行事曆</div><div class="pf-card__tags"><span class="pf-tag">公會</span><span class="pf-tag">會費系統</span></div></div>
+            </div>
+            <div class="pf-card anim">
+              <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://ber.ed.ntnu.edu.tw" alt="師大教育研究集刊" loading="lazy"></div>
+              <div class="pf-card__body"><div class="pf-card__url en">ber.ed.ntnu.edu.tw</div><div class="pf-card__name">師大教育研究集刊</div><div class="pf-card__desc">期刊系統、投審稿、PDF 下載、多語系</div><div class="pf-card__tags"><span class="pf-tag">學術</span><span class="pf-tag">期刊系統</span></div></div>
+            </div>
+            <div class="pf-card anim">
+              <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://netzero.sinica.edu.tw" alt="中研院淨零科技" loading="lazy"></div>
+              <div class="pf-card__body"><div class="pf-card__url en">netzero.sinica.edu.tw</div><div class="pf-card__name">中研院淨零科技</div><div class="pf-card__desc">內容管理、影音專區、政策報告、分類搜尋</div><div class="pf-card__tags"><span class="pf-tag">研究機構</span><span class="pf-tag">內容管理</span></div></div>
+            </div>
+            <div class="pf-card anim">
+              <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://schoolspace.tp.edu.tw" alt="臺北市校園餘裕空間" loading="lazy"></div>
+              <div class="pf-card__body"><div class="pf-card__url en">schoolspace.tp.edu.tw</div><div class="pf-card__name">臺北市校園餘裕空間</div><div class="pf-card__desc">公開資料查詢、RWD 響應式、無障礙設計</div><div class="pf-card__tags"><span class="pf-tag">政府</span><span class="pf-tag">資料平台</span></div></div>
             </div>
           </div>
-          <div class="pf-card anim">
-            <div class="pf-card__img"><img src="https://image.thum.io/get/width/600/crop/375/https://www.tpvma.org.tw" alt="臺北市獸醫師公會" loading="lazy"></div>
-            <div class="pf-card__body">
-              <div class="pf-card__name">臺北市獸醫師公會</div>
-              <div class="pf-card__tags"><span class="pf-tag">會員專區</span><span class="pf-tag">會費繳納</span><span class="pf-tag">活動行事曆</span></div>
-              <div class="pf-card__url">tpvma.org.tw</div>
-            </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──── SLIDE 11: PORTFOLIO 2 — 企業品牌 ──── -->
+    <section class="slide slide--alt" data-section="cases">
+      <div class="slide__inner">
+        <div class="pf-split">
+          <div class="pf-side anim">
+            <div class="pf-side__label">Portfolio</div>
+            <div class="pf-side__title">企業品牌 &amp; 電商</div>
+            <div class="pf-side__divider"></div>
+            <div class="pf-side__desc">設計風格完全配合客戶品牌調性，從日式極簡到現代清爽，客製化的核心價值在於風格完全依客戶的想法調整</div>
+            <a class="pf-side__more" href="https://www.iware.com.tw/works.html" target="_blank">iware.com.tw/works &rarr;</a>
           </div>
-          <div class="pf-card anim">
-            <div class="pf-card__img"><img src="https://image.thum.io/get/width/600/crop/375/https://www.ot.org.tw" alt="台灣職能治療學會" loading="lazy"></div>
-            <div class="pf-card__body">
-              <div class="pf-card__name">台灣職能治療學會</div>
-              <div class="pf-card__tags"><span class="pf-tag">課程報名</span><span class="pf-tag">積分管理</span><span class="pf-tag">期刊投稿</span><span class="pf-tag">會員繳費</span></div>
-              <div class="pf-card__url">ot.org.tw</div>
+          <div class="pf-cards">
+            <div class="pf-card anim">
+              <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://www.laurel.com.tw" alt="桂冠食品" loading="lazy"></div>
+              <div class="pf-card__body"><div class="pf-card__url en">laurel.com.tw</div><div class="pf-card__name">桂冠食品</div><div class="pf-card__desc">品牌官網、食譜內容整合、線上購物商城</div><div class="pf-card__tags"><span class="pf-tag">食品</span><span class="pf-tag">電商</span></div></div>
             </div>
-          </div>
-          <div class="pf-card anim">
-            <div class="pf-card__img"><img src="https://image.thum.io/get/width/600/crop/375/https://www.laurel.com.tw" alt="桂冠食品" loading="lazy"></div>
-            <div class="pf-card__body">
-              <div class="pf-card__name">桂冠食品</div>
-              <div class="pf-card__tags"><span class="pf-tag">品牌官網</span><span class="pf-tag">食譜整合</span><span class="pf-tag">線上購物</span></div>
-              <div class="pf-card__url">laurel.com.tw</div>
+            <div class="pf-card anim">
+              <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://www.yamatoem.com.tw" alt="大和酵素" loading="lazy"></div>
+              <div class="pf-card__body"><div class="pf-card__url en">yamatoem.com.tw</div><div class="pf-card__name">大和酵素</div><div class="pf-card__desc">日式極簡風格、電商功能完整、品牌形象鮮明</div><div class="pf-card__tags"><span class="pf-tag">保健食品</span><span class="pf-tag">電商</span></div></div>
             </div>
-          </div>
-          <div class="pf-card anim">
-            <div class="pf-card__img"><img src="https://image.thum.io/get/width/600/crop/375/https://www.tsh.org.tw" alt="台灣高血壓學會" loading="lazy"></div>
-            <div class="pf-card__body">
-              <div class="pf-card__name">台灣高血壓學會</div>
-              <div class="pf-card__tags"><span class="pf-tag">學術資源</span><span class="pf-tag">衛教專區</span><span class="pf-tag">活動直播</span></div>
-              <div class="pf-card__url">tsh.org.tw</div>
+            <div class="pf-card anim">
+              <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://www.lovetowoman.com" alt="寵愛女人" loading="lazy"></div>
+              <div class="pf-card__body"><div class="pf-card__url en">lovetowoman.com</div><div class="pf-card__name">寵愛女人</div><div class="pf-card__desc">精品二手交易、直購+競標雙模式、精品鑑定</div><div class="pf-card__tags"><span class="pf-tag">精品</span><span class="pf-tag">競標系統</span></div></div>
             </div>
-          </div>
-          <div class="pf-card anim">
-            <div class="pf-card__img"><img src="https://image.thum.io/get/width/600/crop/375/https://schoolspace.tp.edu.tw" alt="臺北市校園餘裕空間" loading="lazy"></div>
-            <div class="pf-card__body">
-              <div class="pf-card__name">臺北市校園餘裕空間</div>
-              <div class="pf-card__tags"><span class="pf-tag">資料查詢</span><span class="pf-tag">RWD</span><span class="pf-tag">無障礙</span></div>
-              <div class="pf-card__url">schoolspace.tp.edu.tw</div>
+            <div class="pf-card anim">
+              <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://allwealth.iware.com.tw/html/" alt="荃贏全美" loading="lazy"></div>
+              <div class="pf-card__body"><div class="pf-card__url en">allwealth.iware.com.tw</div><div class="pf-card__name">荃贏全美</div><div class="pf-card__desc">保健食品品牌、數字動畫、顧客見證</div><div class="pf-card__tags"><span class="pf-tag">保健</span><span class="pf-tag">品牌官網</span></div></div>
+            </div>
+            <div class="pf-card anim">
+              <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://www.jordan.com.tw" alt="喬登美語" loading="lazy"></div>
+              <div class="pf-card__body"><div class="pf-card__url en">jordan.com.tw</div><div class="pf-card__name">喬登美語</div><div class="pf-card__desc">教育品牌官網、課程查詢、分校資訊</div><div class="pf-card__tags"><span class="pf-tag">教育</span><span class="pf-tag">品牌官網</span></div></div>
+            </div>
+            <div class="pf-card anim">
+              <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://www.beautifulcare.com.tw" alt="美琪生技" loading="lazy"></div>
+              <div class="pf-card__body"><div class="pf-card__url en">beautifulcare.com.tw</div><div class="pf-card__name">美琪生技</div><div class="pf-card__desc">生技品牌官網、產品線展示、企業形象</div><div class="pf-card__tags"><span class="pf-tag">生技</span><span class="pf-tag">品牌官網</span></div></div>
+            </div>
+            <div class="pf-card anim">
+              <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://www.interior.com.tw" alt="室內 interior" loading="lazy"></div>
+              <div class="pf-card__body"><div class="pf-card__url en">interior.com.tw</div><div class="pf-card__name">室內 interior</div><div class="pf-card__desc">傢俱品牌官網、產品型錄、門市資訊</div><div class="pf-card__tags"><span class="pf-tag">傢俱</span><span class="pf-tag">品牌官網</span></div></div>
             </div>
           </div>
         </div>
@@ -1753,10 +1912,11 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   const navMap = {
     about: 1,
     services: 3,
-    techsec: 4,
-    compare: 5,
-    process: 6,
-    cases: 8
+    vr360: 4,
+    techsec: 5,
+    compare: 6,
+    process: 7,
+    cases: 9
   };
 
   // ── Particles ──
@@ -1882,9 +2042,9 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
     const anims = slide.querySelectorAll('.anim');
 
     // Special animation for process slide
-    if (idx === 6) { animateProcess(slide); return; }
+    if (idx === 7) { animateProcess(slide); return; }
     // Special animation for design philosophy slide
-    if (idx === 7) { animatePhilosophy(slide); return; }
+    if (idx === 8) { animatePhilosophy(slide); return; }
 
     gsap.fromTo(anims,
       { opacity: 0, y: 24 },
