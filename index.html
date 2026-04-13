@@ -708,6 +708,7 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   padding: 1.5rem;
   border: 1px solid var(--border);
   transition: transform 0.3s, border-color 0.3s;
+  text-align: left;
 }
 
 .svc-card:hover {
@@ -779,31 +780,47 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   padding-top: 3rem;
 }
 
-/* Animated connecting line */
+/* Base connecting line (dim) */
 .process-line {
   position: absolute;
   top: 27px;
   left: 10%;
   right: 10%;
   height: 2px;
-  background: rgba(77,175,124,0.15);
+  background: rgba(77,175,124,0.1);
 }
 
+/* Filled line that draws in */
+.process-line__fill {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green), 0 0 20px rgba(77,175,124,0.4);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* Neon pulse that travels after line draws */
 .process-line::after {
   content: '';
   position: absolute;
-  top: -1px;
+  top: -2px;
   left: 0;
-  width: 120px;
-  height: 4px;
-  background: linear-gradient(90deg, transparent, var(--green), transparent);
-  box-shadow: 0 0 15px var(--green), 0 0 30px rgba(77,175,124,0.4);
-  border-radius: 2px;
-  animation: line-pulse 3s ease-in-out infinite;
+  width: 80px;
+  height: 6px;
+  background: linear-gradient(90deg, transparent, rgba(77,175,124,0.9), var(--green), rgba(77,175,124,0.9), transparent);
+  box-shadow: 0 0 20px var(--green), 0 0 40px rgba(77,175,124,0.5), 0 0 60px rgba(77,175,124,0.2);
+  border-radius: 3px;
+  animation: line-pulse 2.5s ease-in-out infinite;
+  opacity: 0;
 }
 
+.process-timeline.revealed .process-line::after { opacity: 1; }
+
 @keyframes line-pulse {
-  0% { left: -120px; opacity: 0; }
+  0% { left: -80px; opacity: 0; }
   10% { opacity: 1; }
   90% { opacity: 1; }
   100% { left: 100%; opacity: 0; }
@@ -824,43 +841,88 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 }
 
 .step__node {
-  width: 56px; height: 56px;
+  width: 60px; height: 60px;
   border-radius: 50%;
   background: var(--bg);
-  border: 2px solid var(--green);
+  border: 2px solid rgba(77,175,124,0.3);
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 1.25rem;
   font-family: var(--font-en);
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--green);
+  color: rgba(77,175,124,0.4);
   position: relative;
-  box-shadow: var(--neon-shadow);
-  transition: all 0.4s;
+  transition: all 0.5s ease;
+  opacity: 0;
+  transform: scale(0.5);
 }
 
+/* Outer ring pulse */
 .step__node::before {
   content: '';
   position: absolute;
-  inset: -6px;
+  inset: -8px;
   border-radius: 50%;
-  border: 1px solid rgba(77,175,124,0.2);
+  border: 1px solid rgba(77,175,124,0.15);
+  opacity: 0;
+}
+
+/* Inner ring */
+.step__node::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid rgba(77,175,124,0.1);
+  opacity: 0;
+}
+
+/* Activated state */
+.step__node.active {
+  opacity: 1;
+  transform: scale(1);
+  border-color: var(--green);
+  color: var(--green);
+  background: rgba(77,175,124,0.1);
+  box-shadow: 0 0 15px rgba(77,175,124,0.5), 0 0 40px rgba(77,175,124,0.2), 0 0 60px rgba(77,175,124,0.1);
+}
+
+.step__node.active::before {
+  opacity: 1;
+  border-color: rgba(77,175,124,0.3);
   animation: node-ping 2.5s ease-out infinite;
 }
 
-.step:nth-child(1) .step__node::before { animation-delay: 0s; }
-.step:nth-child(2) .step__node::before { animation-delay: 0.6s; }
-.step:nth-child(3) .step__node::before { animation-delay: 1.2s; }
-.step:nth-child(4) .step__node::before { animation-delay: 1.8s; }
+.step__node.active::after {
+  opacity: 1;
+  border-color: rgba(77,175,124,0.2);
+}
+
+.step:nth-child(1) .step__node.active::before { animation-delay: 0s; }
+.step:nth-child(2) .step__node.active::before { animation-delay: 0.6s; }
+.step:nth-child(3) .step__node.active::before { animation-delay: 1.2s; }
+.step:nth-child(4) .step__node.active::before { animation-delay: 1.8s; }
 
 @keyframes node-ping {
   0% { transform: scale(1); opacity: 0.6; }
-  100% { transform: scale(1.8); opacity: 0; }
+  50% { opacity: 0.3; }
+  100% { transform: scale(2); opacity: 0; }
 }
 
-.step:hover .step__node {
-  background: rgba(77,175,124,0.15);
-  box-shadow: var(--neon-shadow-strong);
+/* Glow burst on activation */
+@keyframes node-burst {
+  0% { box-shadow: 0 0 0 0 rgba(77,175,124,0.6); }
+  50% { box-shadow: 0 0 30px 15px rgba(77,175,124,0.3); }
+  100% { box-shadow: 0 0 15px rgba(77,175,124,0.5), 0 0 40px rgba(77,175,124,0.2); }
+}
+
+.step__node.burst {
+  animation: node-burst 0.6s ease-out forwards;
+}
+
+.step:hover .step__node.active {
+  background: rgba(77,175,124,0.2);
+  box-shadow: 0 0 20px rgba(77,175,124,0.6), 0 0 50px rgba(77,175,124,0.3);
   transform: scale(1.1);
 }
 
@@ -876,7 +938,6 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   color: var(--text-light);
   line-height: 1.5;
   margin-bottom: 0.75rem;
-  white-space: nowrap;
 }
 
 .step__list {
@@ -1334,31 +1395,7 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
       </div>
     </section>
 
-    <!-- ──── SLIDE 05: COMPARISON ──── -->
-    <section class="slide slide--alt" data-section="compare">
-      <div class="slide__inner">
-        <p class="label anim en">CHOOSE YOUR FIT</p>
-        <h2 class="title anim">套版 vs 客製化</h2>
-        <div class="divider anim"></div>
-        <p class="subtitle anim">兩種方案我們都有提供，根據您的需求與預算，選擇最適合的路線</p>
-        <table class="compare-table anim">
-          <thead><tr><th>比較項目</th><th>套版方案 — 快速上線</th><th>客製化 — 量身打造</th></tr></thead>
-          <tbody>
-            <tr><td>適合對象</td><td>新創品牌、預算有限、需快速上線</td><td>成熟品牌、需差異化、功能複雜</td></tr>
-            <tr><td>上線時間</td><td>2-4 週快速交付</td><td>3-6 個月精雕細琢</td></tr>
-            <tr><td>視覺設計</td><td>精選模板 + 品牌色彩調整</td><td>從零開始，完全依品牌調性設計</td></tr>
-            <tr><td>功能範圍</td><td>常用功能模組，即選即用</td><td>依需求開發，無功能限制</td></tr>
-            <tr><td>設計彈性</td><td>在模板框架內靈活調整</td><td>想要什麼風格就往那個方向做</td></tr>
-            <tr><td>預算區間</td><td>相對親民，高性價比</td><td>依規模報價，投資長期價值</td></tr>
-            <tr><td>SEO 優化</td><td>基礎 SEO 架構內建</td><td>完整掌控 URL、meta、結構化資料</td></tr>
-            <tr><td>後續擴充</td><td>可升級為客製化方案</td><td>無限擴充，隨業務成長調整</td></tr>
-          </tbody>
-        </table>
-        <p class="compare-note anim">不確定選哪個？<strong>我們會根據您的需求與預算，推薦最適合的方案</strong></p>
-      </div>
-    </section>
-
-    <!-- ──── SLIDE 06: SERVICES ──── -->
+    <!-- ──── SLIDE 05: SERVICES ──── -->
     <section class="slide slide--dark" data-section="services">
       <div class="slide__inner centered">
         <p class="label anim en">OUR SERVICES</p>
@@ -1400,6 +1437,30 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
       </div>
     </section>
 
+    <!-- ──── SLIDE 06: COMPARISON ──── -->
+    <section class="slide slide--alt" data-section="compare">
+      <div class="slide__inner">
+        <p class="label anim en">CHOOSE YOUR FIT</p>
+        <h2 class="title anim">套版 vs 客製化</h2>
+        <div class="divider anim"></div>
+        <p class="subtitle anim">兩種方案我們都有提供，根據您的需求與預算，選擇最適合的路線</p>
+        <table class="compare-table anim">
+          <thead><tr><th>比較項目</th><th>套版方案 — 快速上線</th><th>客製化 — 量身打造</th></tr></thead>
+          <tbody>
+            <tr><td>適合對象</td><td>新創品牌、預算有限、需快速上線</td><td>成熟品牌、需差異化、功能複雜</td></tr>
+            <tr><td>上線時間</td><td>2-4 週快速交付</td><td>3-6 個月精雕細琢</td></tr>
+            <tr><td>視覺設計</td><td>精選模板 + 品牌色彩調整</td><td>從零開始，完全依品牌調性設計</td></tr>
+            <tr><td>功能範圍</td><td>常用功能模組，即選即用</td><td>依需求開發，無功能限制</td></tr>
+            <tr><td>設計彈性</td><td>在模板框架內靈活調整</td><td>想要什麼風格就往那個方向做</td></tr>
+            <tr><td>預算區間</td><td>相對親民，高性價比</td><td>依規模報價，投資長期價值</td></tr>
+            <tr><td>SEO 優化</td><td>基礎 SEO 架構內建</td><td>完整掌控 URL、meta、結構化資料</td></tr>
+            <tr><td>後續擴充</td><td>可升級為客製化方案</td><td>無限擴充，隨業務成長調整</td></tr>
+          </tbody>
+        </table>
+        <p class="compare-note anim">不確定選哪個？<strong>我們會根據您的需求與預算，推薦最適合的方案</strong></p>
+      </div>
+    </section>
+
     <!-- ──── SLIDE 07: PROCESS ──── -->
     <section class="slide slide--alt" data-section="process">
       <div class="slide__inner centered">
@@ -1407,8 +1468,8 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
         <h2 class="title anim">專案合作流程</h2>
         <div class="divider anim"></div>
         <p class="subtitle anim">從需求到上線，每個階段都有清楚的交付與確認點</p>
-        <div class="process-timeline anim">
-          <div class="process-line"></div>
+        <div class="process-timeline">
+          <div class="process-line"><div class="process-line__fill"></div></div>
           <div class="steps-row">
             <div class="step">
               <div class="step__node en">01</div>
@@ -1614,8 +1675,8 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   // Nav section mapping: nav button -> first slide index
   const navMap = {
     about: 0,
-    compare: 3,
-    services: 4,
+    services: 3,
+    compare: 4,
     process: 5,
     cases: 7,
     techsec: 9
@@ -1743,6 +1804,12 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
     const slide = slides[idx];
     const anims = slide.querySelectorAll('.anim');
 
+    // Special animation for process slide
+    if (idx === 5) {
+      animateProcess(slide);
+      return;
+    }
+
     gsap.fromTo(anims,
       { opacity: 0, y: 24 },
       {
@@ -1756,6 +1823,53 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
         }
       }
     );
+  }
+
+  function animateProcess(slide) {
+    const tl = gsap.timeline();
+    const header = slide.querySelectorAll('.label, .title, .divider, .subtitle');
+    const lineFill = slide.querySelector('.process-line__fill');
+    const timeline = slide.querySelector('.process-timeline');
+    const steps = slide.querySelectorAll('.step');
+    const nodes = slide.querySelectorAll('.step__node');
+
+    // 1. Fade in header
+    tl.fromTo(header, { opacity: 0, y: 24 }, {
+      opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out'
+    });
+
+    // 2. Draw the connecting line
+    tl.to(lineFill, {
+      scaleX: 1, duration: 1.2, ease: 'power2.inOut'
+    }, '-=0.1');
+
+    // 3. Activate each node sequentially
+    nodes.forEach((node, i) => {
+      const step = steps[i];
+      const title = step.querySelector('.step__title');
+      const desc = step.querySelector('.step__desc');
+      const list = step.querySelector('.step__list');
+      const items = step.querySelectorAll('.step__list li');
+
+      // Pop node
+      tl.to(node, {
+        opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(2)',
+        onStart: () => { node.classList.add('active', 'burst'); }
+      }, `-=${i === 0 ? 0.6 : 0.15}`);
+
+      // Slide in content
+      tl.fromTo([title, desc], { opacity: 0, y: 16 }, {
+        opacity: 1, y: 0, duration: 0.35, stagger: 0.06, ease: 'power2.out'
+      }, '-=0.1');
+
+      // Stagger list items
+      tl.fromTo(items, { opacity: 0, x: -10 }, {
+        opacity: 1, x: 0, duration: 0.25, stagger: 0.05, ease: 'power2.out'
+      }, '-=0.15');
+    });
+
+    // 4. Enable the continuous pulse
+    tl.call(() => { timeline.classList.add('revealed'); });
   }
 
   function runCountUp(slide) {
