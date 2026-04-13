@@ -1001,102 +1001,82 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 /* ═══════════════════════════════════════════
    3D PANORAMIC SLIDE
    ═══════════════════════════════════════════ */
-.vr-layout {
+.vr-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
   margin-top: 2rem;
-  align-items: start;
 }
 
-.vr-features { display: flex; flex-direction: column; gap: 18px; }
-
-.vr-feat {
-  display: flex; gap: 1rem; align-items: flex-start;
-  padding: 1rem 1.2rem;
+.vr-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 12px;
-  transition: border-color 0.3s;
+  padding: 1.4rem;
+  transition: border-color 0.3s, transform 0.3s;
 }
-.vr-feat:hover { border-color: rgba(77,175,124,0.3); }
-.vr-feat__icon { width: 36px; height: 36px; flex-shrink: 0; color: var(--green); }
-.vr-feat__title { font-weight: 600; margin-bottom: 0.2rem; }
-.vr-feat__desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; }
+.vr-card:hover { border-color: rgba(77,175,124,0.35); transform: translateY(-3px); }
 
-.vr-showcase {
-  display: flex; flex-direction: column; gap: 16px;
-}
-
-.vr-demo {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-  transition: border-color 0.3s;
-}
-.vr-demo:hover { border-color: rgba(77,175,124,0.3); }
-
-.vr-demo__img {
-  width: 100%; aspect-ratio: 16/9;
-  background: linear-gradient(135deg, #141c2a, #0d1520);
+.vr-card__icon {
+  width: 40px; height: 40px;
   display: flex; align-items: center; justify-content: center;
-  color: var(--green); font-size: 3rem; position: relative; overflow: hidden;
+  background: var(--green-light);
+  border-radius: 10px;
+  color: var(--green);
+  margin-bottom: 0.8rem;
 }
-
-.vr-demo__img::after {
-  content: '360°'; position: absolute;
-  font-family: var(--font-en); font-weight: 700; font-size: 2.5rem;
-  opacity: 0.15;
-}
-
-.vr-demo__body { padding: 0.8rem 1rem; }
-.vr-demo__name { font-weight: 600; font-size: 0.9rem; }
-.vr-demo__tag { font-size: 0.78rem; color: var(--green); margin-top: 2px; }
+.vr-card__icon svg { width: 20px; height: 20px; }
+.vr-card__title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; }
+.vr-card__desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.55; }
 
 /* ═══════════════════════════════════════════
    PORTFOLIO — SPLIT LAYOUT
    ═══════════════════════════════════════════ */
 .pf-split {
   display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 40px;
-  margin-top: 2rem;
+  grid-template-columns: 280px 1fr;
+  gap: 36px;
+  margin-top: 1.5rem;
   align-items: start;
-  height: calc(100% - 120px);
 }
 
 .pf-side { padding-top: 0.5rem; }
-.pf-side__label { font-family: var(--font-en); font-size: 0.75rem; letter-spacing: 0.12em; color: var(--green); text-transform: uppercase; margin-bottom: 0.5rem; }
-.pf-side__title { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.6rem; }
-.pf-side__divider { width: 36px; height: 2px; background: var(--green); margin-bottom: 1rem; }
-.pf-side__desc { font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; }
-.pf-side__more { display: inline-block; margin-top: 1.5rem; font-family: var(--font-en); font-size: 0.82rem; color: var(--green); border-bottom: 1px solid rgba(77,175,124,0.3); }
+.pf-side__label { font-family: var(--font-en); font-size: 0.72rem; letter-spacing: 0.14em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.6rem; }
+.pf-side__title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.6rem; line-height: 1.35; }
+.pf-side__divider { width: 32px; height: 2px; background: var(--green); margin-bottom: 1rem; }
+.pf-side__desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; }
+.pf-side__quote {
+  margin-top: 1.2rem; padding: 0.9rem 1rem;
+  border-left: 2px solid var(--green);
+  background: rgba(77,175,124,0.04);
+  font-size: 0.82rem; color: var(--text-light); line-height: 1.55;
+}
+.pf-side__more { display: inline-block; margin-top: 1.2rem; font-family: var(--font-en); font-size: 0.8rem; color: var(--green); border-bottom: 1px solid rgba(77,175,124,0.3); text-decoration: none; }
 
 .pf-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
   align-content: start;
 }
 
 .pf-card {
-  background: var(--bg-card);
-  border-radius: 10px;
+  background: #fff;
+  border-radius: 8px;
   overflow: hidden;
-  border: 1px solid var(--border);
-  transition: transform 0.3s, border-color 0.3s;
+  border: 1px solid rgba(0,0,0,0.06);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .pf-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(77,175,124,0.35);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.25);
 }
 
 .pf-card__img {
   width: 100%;
   aspect-ratio: 16 / 10;
-  background: linear-gradient(135deg, #141c2a, #0d1520);
+  background: #f0f0f0;
   overflow: hidden;
 }
 
@@ -1109,32 +1089,33 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 }
 
 .pf-card:hover .pf-card__img img {
-  transform: scale(1.03);
+  transform: scale(1.04);
 }
 
 .pf-card__body {
-  padding: 0.7rem 0.9rem;
+  padding: 0.65rem 0.8rem;
 }
 
 .pf-card__url {
-  font-size: 0.7rem;
-  color: var(--text-muted);
+  font-size: 0.68rem;
+  color: #999;
   font-family: var(--font-en);
   letter-spacing: 0.02em;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
 }
 
 .pf-card__name {
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin-bottom: 0.35rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 0.25rem;
 }
 
 .pf-card__desc {
-  font-size: 0.78rem;
-  color: var(--text-muted);
+  font-size: 0.75rem;
+  color: #666;
   line-height: 1.45;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.35rem;
 }
 
 .pf-card__tags {
@@ -1144,12 +1125,13 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 }
 
 .pf-tag {
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   padding: 2px 8px;
-  border-radius: 10px;
-  background: var(--green-light);
+  border-radius: 3px;
+  border: 1px solid rgba(77,175,124,0.4);
   color: var(--green);
   font-weight: 500;
+  background: transparent;
 }
 
 /* ═══════════════════════════════════════════
@@ -1379,7 +1361,7 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
   .ts-grid { grid-template-columns: 1fr; }
   .phi-grid { gap: 16px; }
-  .vr-layout { grid-template-columns: 1fr; }
+  .vr-grid { grid-template-columns: repeat(2, 1fr); }
   .pf-split { grid-template-columns: 1fr; }
   .pf-side { padding-bottom: 0; }
   .pf-cards { grid-template-columns: repeat(3, 1fr); }
@@ -1399,7 +1381,7 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   .pf-split { grid-template-columns: 1fr; gap: 16px; }
   .pf-cards { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .pf-card__desc { display: none; }
-  .vr-layout { grid-template-columns: 1fr; gap: 20px; }
+  .vr-grid { grid-template-columns: 1fr; }
   .hero__meta { flex-direction: column; gap: 0.4rem; }
   .compare-table { font-size: 0.78rem; }
   .cta__footer { flex-direction: column; align-items: center; }
@@ -1426,7 +1408,6 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
     <button class="topnav__btn topnav__btn--active" data-nav="about">關於馬亞</button>
     <button class="topnav__btn" data-nav="services">服務項目</button>
     <button class="topnav__btn" data-nav="vr360">3D 環景</button>
-    <button class="topnav__btn" data-nav="techsec">技術資安</button>
     <button class="topnav__btn" data-nav="compare">套版 vs 客製</button>
     <button class="topnav__btn" data-nav="process">合作流程</button>
     <button class="topnav__btn" data-nav="cases">精選案例</button>
@@ -1604,79 +1585,48 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 
     <!-- ──── SLIDE 05: 3D PANORAMIC ──── -->
     <section class="slide slide--alt" data-section="vr360">
-      <div class="slide__inner">
-        <p class="label anim en">3D VIRTUAL TOUR</p>
-        <h2 class="title anim">3D 環景拍攝</h2>
-        <div class="divider anim"></div>
-        <p class="subtitle anim">360° 沉浸式虛擬實境導覽，讓訪客身歷其境感受空間魅力</p>
-        <div class="vr-layout">
-          <div class="vr-features">
-            <div class="vr-feat anim">
-              <div class="vr-feat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-              <div><div class="vr-feat__title">Google 商家街景</div><div class="vr-feat__desc">整合 Google Maps 街景服務，客戶搜尋即可線上看店面環境，提升到訪意願與信任感</div></div>
-            </div>
-            <div class="vr-feat anim">
-              <div class="vr-feat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M12 17v4"/><path d="M8 21h8"/><circle cx="12" cy="10" r="3"/></svg></div>
-              <div><div class="vr-feat__title">空間 / 展場環景</div><div class="vr-feat__desc">飯店、餐廳、展覽空間、辦公室等室內環境，全景拍攝讓遠端訪客也能完整瀏覽</div></div>
-            </div>
-            <div class="vr-feat anim">
-              <div class="vr-feat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
-              <div><div class="vr-feat__title">互動式虛擬導覽</div><div class="vr-feat__desc">支援熱點導航、資訊標籤、自動播放路徑，可嵌入網站或社群平台分享</div></div>
-            </div>
-            <div class="vr-feat anim">
-              <div class="vr-feat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
-              <div><div class="vr-feat__title">多平台嵌入</div><div class="vr-feat__desc">一次拍攝，可嵌入官網、Google 商家、Facebook、LINE 等多平台曝光</div></div>
-            </div>
-          </div>
-          <div class="vr-showcase">
-            <div class="vr-demo anim">
-              <div class="vr-demo__img"><svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.5" width="60" height="60" opacity="0.3"><circle cx="40" cy="40" r="30"/><ellipse cx="40" cy="40" rx="15" ry="30"/><line x1="10" y1="40" x2="70" y2="40"/><line x1="40" y1="10" x2="40" y2="70"/></svg></div>
-              <div class="vr-demo__body"><div class="vr-demo__name">飯店 / 民宿空間導覽</div><div class="vr-demo__tag">Google 街景整合</div></div>
-            </div>
-            <div class="vr-demo anim">
-              <div class="vr-demo__img"><svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.5" width="60" height="60" opacity="0.3"><rect x="10" y="15" width="60" height="50" rx="4"/><path d="M10 30h60"/><circle cx="25" cy="45" r="8"/><circle cx="55" cy="45" r="8"/></svg></div>
-              <div class="vr-demo__body"><div class="vr-demo__name">展覽 / 活動空間</div><div class="vr-demo__tag">互動式熱點導覽</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ──── SLIDE 06: TECH & SECURITY ──── -->
-    <section class="slide slide--dark" data-section="techsec">
       <div class="slide__inner centered">
-        <p class="label anim en">PLATFORM</p>
-        <h2 class="title anim">技術與資安</h2>
+        <p class="label anim en">3D VIRTUAL TOUR</p>
+        <h2 class="title anim">3D 環景掃描服務</h2>
         <div class="divider anim"></div>
-        <p class="subtitle anim">掌握主流技術，以國際認證標準保障您的數位資產</p>
-        <div class="ts-grid">
-          <div class="ts-block anim">
-            <div class="ts-block__header"><div class="ts-block__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div><div class="ts-block__title">搜尋引擎優化</div><div class="ts-block__sub">SEO Optimization</div></div></div>
-            <ul class="ts-list">
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">每頁獨立 Meta</div><div class="ts-item__desc">Title / Keywords / Description 個別設定</div></div></li>
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">自訂 URL 結構</div><div class="ts-item__desc">語意化網址，三層結構搜尋友善</div></div></li>
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">Canonical URL</div><div class="ts-item__desc">防重複內容，集中權重</div></div></li>
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">Sitemap.xml 自動產生</div><div class="ts-item__desc">主動提交搜尋引擎，加速頁面收錄</div></div></li>
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">OG 社群預覽標籤</div><div class="ts-item__desc">LINE / FB 分享自動帶標題、圖片、說明</div></div></li>
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">GA + Search Console</div><div class="ts-item__desc">Google 分析工具完整整合</div></div></li>
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">FB 像素追蹤</div><div class="ts-item__desc">再行銷廣告精準投放</div></div></li>
-            </ul>
+        <p class="subtitle anim">Matterport 專業設備，現場 3D 掃描打造沉浸式虛擬空間導覽</p>
+        <div class="vr-grid">
+          <div class="vr-card anim">
+            <div class="vr-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <h3 class="vr-card__title">場域導覽</h3>
+            <p class="vr-card__desc">身臨其境的體驗，在具有深度與空間感的場景中自由流暢地走動</p>
           </div>
-          <div class="ts-block anim">
-            <div class="ts-block__header"><div class="ts-block__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><div class="ts-block__title">資安防護</div><div class="ts-block__sub">Security</div></div></div>
-            <ul class="ts-list">
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">ISO 27001:2022</div><div class="ts-item__desc">國際資訊安全管理系統認證</div></div></li>
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">SSL 全站加密</div><div class="ts-item__desc">HTTPS 安全傳輸，保護用戶資料</div></div></li>
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">WAF 防火牆</div><div class="ts-item__desc">網站應用程式防火牆，即時防護</div></div></li>
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">每日自動備份</div><div class="ts-item__desc">可快速還原，資料不遺失</div></div></li>
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">後台權限分級</div><div class="ts-item__desc">依角色設定存取權限</div></div></li>
-            </ul>
+          <div class="vr-card anim">
+            <div class="vr-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+            <h3 class="vr-card__title">娃娃屋視角</h3>
+            <p class="vr-card__desc">3D 立體影像提供場景的整體概覽配置，一覽空間全貌</p>
+          </div>
+          <div class="vr-card anim">
+            <div class="vr-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h20"/><path d="M5 20V8l7-5 7 5v12"/><line x1="9" y1="20" x2="9" y2="12"/><line x1="15" y1="20" x2="15" y2="12"/></svg></div>
+            <h3 class="vr-card__title">空間測量</h3>
+            <p class="vr-card__desc">線上即可測量場景中物件的大小、長度、距離等尺寸</p>
+          </div>
+          <div class="vr-card anim">
+            <div class="vr-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <h3 class="vr-card__title">互動標籤點</h3>
+            <p class="vr-card__desc">添加文字、圖片、影音、超連結等內容，大幅提升場景互動感</p>
+          </div>
+          <div class="vr-card anim">
+            <div class="vr-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+            <h3 class="vr-card__title">權限控管</h3>
+            <p class="vr-card__desc">加密保護重要場域資訊，僅提供給授權相關人員使用</p>
+          </div>
+          <div class="vr-card anim">
+            <div class="vr-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+            <h3 class="vr-card__title">網頁 &amp; 社群整合</h3>
+            <p class="vr-card__desc">整合至官網，亦可透過 FB、IG、Google 商家等社群平台分享</p>
           </div>
         </div>
+        <p class="vr-note anim" style="margin-top:1.2rem; font-size:0.85rem; color:var(--text-muted);">適用產業：展覽展場、旅遊餐飲、廠區工程、設施管理｜設備：Matterport Pro2 / Pro3 LiDAR</p>
       </div>
     </section>
 
-    <!-- ──── SLIDE 07: COMPARISON ──── -->
+    <!-- ──── SLIDE 06: COMPARISON ──── -->
     <section class="slide slide--alt" data-section="compare">
       <div class="slide__inner">
         <p class="label anim en">CHOOSE YOUR FIT</p>
@@ -1779,8 +1729,9 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
             <div class="pf-side__label">Portfolio</div>
             <div class="pf-side__title">公協會 &amp; 學術機構</div>
             <div class="pf-side__divider"></div>
-            <div class="pf-side__desc">深耕公協會、學會、政府機關網站建置，累積 30 年同類型產業經驗，理解會員管理、活動報名、積分制度等核心需求</div>
-            <a class="pf-side__more" href="https://www.iware.com.tw/works.html" target="_blank">iware.com.tw/works &rarr;</a>
+            <div class="pf-side__desc">深耕公協會、學會、政府機關網站建置，累積 30 年同類型產業經驗</div>
+            <div class="pf-side__quote">理解會員管理、活動報名、積分制度、期刊投稿等核心需求——這些是同類型產業才懂的細節。</div>
+            <a class="pf-side__more" href="https://www.iware.com.tw/works.html" target="_blank">更多案例 &rarr;</a>
           </div>
           <div class="pf-cards">
             <div class="pf-card anim">
@@ -1824,8 +1775,9 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
             <div class="pf-side__label">Portfolio</div>
             <div class="pf-side__title">企業品牌 &amp; 電商</div>
             <div class="pf-side__divider"></div>
-            <div class="pf-side__desc">設計風格完全配合客戶品牌調性，從日式極簡到現代清爽，客製化的核心價值在於風格完全依客戶的想法調整</div>
-            <a class="pf-side__more" href="https://www.iware.com.tw/works.html" target="_blank">iware.com.tw/works &rarr;</a>
+            <div class="pf-side__desc">每個作品都根據客戶品牌定位量身打造，風格完全依客戶的想法調整</div>
+            <div class="pf-side__quote">從日式極簡到現代清爽，客製化的核心價值在於——你想要什麼風格就能做什麼風格。</div>
+            <a class="pf-side__more" href="https://www.iware.com.tw/works.html" target="_blank">更多案例 &rarr;</a>
           </div>
           <div class="pf-cards">
             <div class="pf-card anim">
@@ -1912,10 +1864,9 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
     about: 1,
     services: 3,
     vr360: 4,
-    techsec: 5,
-    compare: 6,
-    process: 7,
-    cases: 9
+    compare: 5,
+    process: 6,
+    cases: 8
   };
 
   // ── Particles ──
@@ -2041,9 +1992,9 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
     const anims = slide.querySelectorAll('.anim');
 
     // Special animation for process slide
-    if (idx === 7) { animateProcess(slide); return; }
+    if (idx === 6) { animateProcess(slide); return; }
     // Special animation for design philosophy slide
-    if (idx === 8) { animatePhilosophy(slide); return; }
+    if (idx === 7) { animatePhilosophy(slide); return; }
 
     gsap.fromTo(anims,
       { opacity: 0, y: 24 },
