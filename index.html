@@ -293,19 +293,61 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 /* ═══════════════════════════════════════════
    SLIDE 1: HERO / COVER
    ═══════════════════════════════════════════ */
-.hero-canvas {
+.hero-bg {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
   z-index: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 25% 35%, rgba(77,175,124,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 75% 65%, rgba(77,175,124,0.08) 0%, transparent 50%),
+    var(--bg);
 }
 
-.hero-overlay {
+.hero-bg::before,
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(77,175,124,0.15);
+  animation: hero-orbit linear infinite;
+}
+
+.hero-bg::before {
+  width: 500px; height: 500px;
+  top: 50%; left: 50%;
+  margin: -250px 0 0 -250px;
+  animation-duration: 25s;
+}
+
+.hero-bg::after {
+  width: 750px; height: 750px;
+  top: 50%; left: 50%;
+  margin: -375px 0 0 -375px;
+  animation-duration: 35s;
+  animation-direction: reverse;
+  border-style: dashed;
+  border-color: rgba(77,175,124,0.08);
+}
+
+@keyframes hero-orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Grid lines decoration */
+.hero-grid {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: radial-gradient(ellipse at center, rgba(10,14,23,0.15) 0%, rgba(10,14,23,0.75) 70%);
-  z-index: 1;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(77,175,124,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(77,175,124,0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
 }
 
 .hero-content {
@@ -997,8 +1039,8 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 
     <!-- ──── SLIDE 01: COVER ──── -->
     <section class="slide slide--dark" data-section="about">
-      <canvas class="hero-canvas" id="heroCanvas"></canvas>
-      <div class="hero-overlay"></div>
+      <div class="hero-bg"></div>
+      <div class="hero-grid"></div>
       <div class="hero-content">
         <p class="label anim en">PARTNERSHIP PROPOSAL — 2026</p>
         <h1 class="hero__title anim" id="heroTitle">30 年深耕，為企業打造卓越數位體驗</h1>
@@ -1333,7 +1375,6 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 
 <!-- ═══ SCRIPTS ═══ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function() {
   'use strict';
@@ -1367,60 +1408,6 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
       p.style.animationDelay = (Math.random() * 20) + 's';
       c.appendChild(p);
     }
-  })();
-
-  // ── Three.js Hero ──
-  (function() {
-    const canvas = document.getElementById('heroCanvas');
-    if (!canvas || !window.THREE) return;
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 5;
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-    const green = 0x4DAF7C;
-    const mat = new THREE.MeshBasicMaterial({ color: green, wireframe: true, transparent: true, opacity: 0.3 });
-    const matL = new THREE.MeshBasicMaterial({ color: green, wireframe: true, transparent: true, opacity: 0.15 });
-    const ico = new THREE.Mesh(new THREE.IcosahedronGeometry(2, 1), mat);
-    const torus = new THREE.Mesh(new THREE.TorusGeometry(3, 0.3, 16, 40), matL);
-    const octa = new THREE.Mesh(new THREE.OctahedronGeometry(1.2, 0), mat);
-    octa.position.set(3, 2, -2);
-    scene.add(ico, torus, octa);
-
-    const geo = new THREE.BufferGeometry();
-    const pos = new Float32Array(200 * 3);
-    for (let i = 0; i < 600; i++) pos[i] = (Math.random() - 0.5) * 20;
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ color: green, size: 0.04, transparent: true, opacity: 0.6 })));
-
-    let mx = 0, my = 0;
-    document.addEventListener('mousemove', e => {
-      mx = (e.clientX / window.innerWidth - 0.5) * 2;
-      my = (e.clientY / window.innerHeight - 0.5) * 2;
-    });
-
-    (function loop() {
-      requestAnimationFrame(loop);
-      const t = Date.now() * 0.0003;
-      ico.rotation.x = t * 0.5 + my * 0.1;
-      ico.rotation.y = t * 0.7 + mx * 0.1;
-      torus.rotation.x = t * 0.3;
-      torus.rotation.y = t * 0.4;
-      octa.rotation.x = t * 0.8;
-      octa.rotation.z = t * 0.6;
-      camera.position.x += (mx * 0.3 - camera.position.x) * 0.02;
-      camera.position.y += (-my * 0.3 - camera.position.y) * 0.02;
-      camera.lookAt(scene.position);
-      renderer.render(scene, camera);
-    })();
-
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
   })();
 
   // ── Build dots ──
