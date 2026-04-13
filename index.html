@@ -442,59 +442,110 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 }
 
 /* ═══════════════════════════════════════════
-   SLIDE 3: DESIGN PHILOSOPHY
+   SLIDE 3: DESIGN PHILOSOPHY — CINEMATIC ROWS
    ═══════════════════════════════════════════ */
-.phi-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-top: 2.5rem;
+.phi-rows {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.phi-card {
-  background: var(--bg-card);
-  border-radius: 14px;
-  padding: 1.75rem;
-  border: 1px solid var(--border);
-  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+.phi-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.4rem 1.5rem;
+  position: relative;
+  border-bottom: 1px solid rgba(77,175,124,0.08);
 }
 
-.phi-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(77,175,124,0.4);
-  box-shadow: var(--neon-shadow-strong);
+.phi-row:last-child { border-bottom: none; }
+
+/* Left neon bar */
+.phi-row::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 10%; bottom: 10%;
+  width: 3px;
+  background: var(--green);
+  box-shadow: 0 0 8px rgba(77,175,124,0.5), 0 0 20px rgba(77,175,124,0.2);
+  border-radius: 2px;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.5s ease;
 }
 
-.phi-card__num {
+.phi-row.active::before {
+  transform: scaleY(1);
+}
+
+/* Hover glow */
+.phi-row:hover {
+  background: rgba(77,175,124,0.03);
+}
+
+.phi-row__num {
   font-family: var(--font-en);
-  font-size: 0.68rem;
-  font-weight: 600;
+  font-size: 2.8rem;
+  font-weight: 800;
   color: var(--green);
-  letter-spacing: 0.1em;
-  margin-bottom: 0.75rem;
+  min-width: 85px;
+  text-shadow: 0 0 25px rgba(77,175,124,0.4);
+  line-height: 1;
+  opacity: 0.85;
 }
 
-.phi-card__icon {
-  width: 42px; height: 42px;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--green-light);
-  border-radius: 10px;
-  margin-bottom: 1rem;
-  color: var(--green);
-}
-
-.phi-card__icon svg { width: 20px; height: 20px; }
-
-.phi-card__title {
-  font-size: 1.25rem;
+.phi-row__word {
+  font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 0.4rem;
+  min-width: 100px;
+  white-space: nowrap;
 }
 
-.phi-card__desc {
-  font-size: 0.95rem;
+.phi-row__line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(77,175,124,0.5), rgba(77,175,124,0.05));
+  position: relative;
+  transform-origin: left;
+}
+
+/* Neon pulse on the line */
+.phi-row__line::after {
+  content: '';
+  position: absolute;
+  top: -2px; left: 0;
+  width: 40px; height: 5px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  box-shadow: 0 0 10px var(--green);
+  border-radius: 3px;
+  animation: phi-line-pulse 2s ease-in-out infinite;
+  opacity: 0;
+}
+
+.phi-row.active .phi-row__line::after { opacity: 1; }
+
+.phi-row:nth-child(1) .phi-row__line::after { animation-delay: 0s; }
+.phi-row:nth-child(2) .phi-row__line::after { animation-delay: 0.5s; }
+.phi-row:nth-child(3) .phi-row__line::after { animation-delay: 1s; }
+.phi-row:nth-child(4) .phi-row__line::after { animation-delay: 1.5s; }
+
+@keyframes phi-line-pulse {
+  0% { left: -40px; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+.phi-row__desc {
+  font-size: 1rem;
   color: var(--text-light);
+  max-width: 380px;
   line-height: 1.55;
+  flex-shrink: 0;
 }
 
 /* ═══════════════════════════════════════════
@@ -1195,7 +1246,6 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
    ═══════════════════════════════════════════ */
 @media (max-width: 1024px) {
   .slide__inner { padding: 36px 40px; }
-  .phi-grid { grid-template-columns: repeat(2, 1fr); }
   .svc-grid { grid-template-columns: repeat(2, 1fr); }
   .steps-grid { grid-template-columns: repeat(2, 1fr); }
   .steps-grid::before { display: none; }
@@ -1405,7 +1455,39 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
       </div>
     </section>
 
-    <!-- ──── SLIDE 06: COMPARISON ──── -->
+    <!-- ──── SLIDE 06: TECH & SECURITY ──── -->
+    <section class="slide slide--dark" data-section="techsec">
+      <div class="slide__inner centered">
+        <p class="label anim en">PLATFORM</p>
+        <h2 class="title anim">技術與資安</h2>
+        <div class="divider anim"></div>
+        <p class="subtitle anim">掌握主流技術，以國際認證標準保障您的數位資產</p>
+        <div class="ts-grid">
+          <div class="ts-block anim">
+            <div class="ts-block__header"><div class="ts-block__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div><div class="ts-block__title">搜尋引擎優化</div><div class="ts-block__sub">SEO Optimization</div></div></div>
+            <ul class="ts-list">
+              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">每頁獨立 Meta</div><div class="ts-item__desc">Title / Keywords / Description 個別設定</div></div></li>
+              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">自訂 URL 結構</div><div class="ts-item__desc">語意化網址，三層結構搜尋友善</div></div></li>
+              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">Canonical URL</div><div class="ts-item__desc">防重複內容，集中權重</div></div></li>
+              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">GA + Search Console</div><div class="ts-item__desc">Google 分析工具完整整合</div></div></li>
+              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">FB 像素追蹤</div><div class="ts-item__desc">再行銷廣告精準投放</div></div></li>
+            </ul>
+          </div>
+          <div class="ts-block anim">
+            <div class="ts-block__header"><div class="ts-block__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><div class="ts-block__title">資安防護</div><div class="ts-block__sub">Security</div></div></div>
+            <ul class="ts-list">
+              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">ISO 27001:2022</div><div class="ts-item__desc">國際資訊安全管理系統認證</div></div></li>
+              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">SSL 全站加密</div><div class="ts-item__desc">HTTPS 安全傳輸，保護用戶資料</div></div></li>
+              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">WAF 防火牆</div><div class="ts-item__desc">網站應用程式防火牆，即時防護</div></div></li>
+              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">每日自動備份</div><div class="ts-item__desc">可快速還原，資料不遺失</div></div></li>
+              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">後台權限分級</div><div class="ts-item__desc">依角色設定存取權限</div></div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──── SLIDE 07: COMPARISON ──── -->
     <section class="slide slide--alt" data-section="compare">
       <div class="slide__inner">
         <p class="label anim en">CHOOSE YOUR FIT</p>
@@ -1475,30 +1557,30 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
         <h2 class="title anim">聆聽、溝通、觀察、設計</h2>
         <div class="divider anim"></div>
         <p class="subtitle anim">每個專案都從理解你的品牌開始，不套公式、不走捷徑</p>
-        <div class="phi-grid">
-          <div class="phi-card anim">
-            <div class="phi-card__num en">01</div>
-            <div class="phi-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
-            <h3 class="phi-card__title">聆聽</h3>
-            <p class="phi-card__desc">深入了解品牌核心與需求，仔細聽取客戶的聲音與想法</p>
+        <div class="phi-rows">
+          <div class="phi-row">
+            <span class="phi-row__num en">01</span>
+            <span class="phi-row__word">聆聽</span>
+            <span class="phi-row__line"></span>
+            <span class="phi-row__desc">深入了解品牌核心與需求，仔細聽取客戶的聲音與想法</span>
           </div>
-          <div class="phi-card anim">
-            <div class="phi-card__num en">02</div>
-            <div class="phi-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-            <h3 class="phi-card__title">溝通</h3>
-            <p class="phi-card__desc">確認目標、釐清方向，來回討論找出最適合的定位</p>
+          <div class="phi-row">
+            <span class="phi-row__num en">02</span>
+            <span class="phi-row__word">溝通</span>
+            <span class="phi-row__line"></span>
+            <span class="phi-row__desc">確認目標、釐清方向，來回討論找出最適合的定位</span>
           </div>
-          <div class="phi-card anim">
-            <div class="phi-card__num en">03</div>
-            <div class="phi-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-            <h3 class="phi-card__title">觀察</h3>
-            <p class="phi-card__desc">研究市場趨勢與競品，掌握業界最新技術與做法</p>
+          <div class="phi-row">
+            <span class="phi-row__num en">03</span>
+            <span class="phi-row__word">觀察</span>
+            <span class="phi-row__line"></span>
+            <span class="phi-row__desc">研究市場趨勢與競品，掌握業界最新技術與做法</span>
           </div>
-          <div class="phi-card anim">
-            <div class="phi-card__num en">04</div>
-            <div class="phi-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
-            <h3 class="phi-card__title">設計</h3>
-            <p class="phi-card__desc">打造獨一無二的品牌網站，讓客戶滿意、使用者好用</p>
+          <div class="phi-row">
+            <span class="phi-row__num en">04</span>
+            <span class="phi-row__word">設計</span>
+            <span class="phi-row__line"></span>
+            <span class="phi-row__desc">打造獨一無二的品牌網站，讓客戶滿意、使用者好用</span>
           </div>
         </div>
       </div>
@@ -1520,38 +1602,6 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
           <div class="pf-card anim"><div class="pf-card__emoji">📊</div><div class="pf-card__name">台灣高血壓學會</div><div class="pf-card__type">衛教 / 活動直播</div><div class="pf-card__tags"><span class="pf-tag">學術資源</span><span class="pf-tag">會員內容</span></div></div>
           <div class="pf-card anim"><div class="pf-card__emoji">📰</div><div class="pf-card__name">師大教育研究集刊</div><div class="pf-card__type">期刊系統</div><div class="pf-card__tags"><span class="pf-tag">投審稿</span><span class="pf-tag">多語系</span></div></div>
           <div class="pf-card anim"><div class="pf-card__emoji">🏫</div><div class="pf-card__name">臺北市校園餘裕空間</div><div class="pf-card__type">資料查詢平台</div><div class="pf-card__tags"><span class="pf-tag">RWD</span><span class="pf-tag">無障礙</span></div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ──── SLIDE 10: TECH & SECURITY ──── -->
-    <section class="slide slide--dark" data-section="techsec">
-      <div class="slide__inner centered">
-        <p class="label anim en">PLATFORM</p>
-        <h2 class="title anim">技術與資安</h2>
-        <div class="divider anim"></div>
-        <p class="subtitle anim">掌握主流技術，以國際認證標準保障您的數位資產</p>
-        <div class="ts-grid">
-          <div class="ts-block anim">
-            <div class="ts-block__header"><div class="ts-block__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div><div class="ts-block__title">搜尋引擎優化</div><div class="ts-block__sub">SEO Optimization</div></div></div>
-            <ul class="ts-list">
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">每頁獨立 Meta</div><div class="ts-item__desc">Title / Keywords / Description 個別設定</div></div></li>
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">自訂 URL 結構</div><div class="ts-item__desc">語意化網址，三層結構搜尋友善</div></div></li>
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">Canonical URL</div><div class="ts-item__desc">防重複內容，集中權重</div></div></li>
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">GA + Search Console</div><div class="ts-item__desc">Google 分析工具完整整合</div></div></li>
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">FB 像素追蹤</div><div class="ts-item__desc">再行銷廣告精準投放</div></div></li>
-            </ul>
-          </div>
-          <div class="ts-block anim">
-            <div class="ts-block__header"><div class="ts-block__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><div class="ts-block__title">資安防護</div><div class="ts-block__sub">Security</div></div></div>
-            <ul class="ts-list">
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">ISO 27001:2022</div><div class="ts-item__desc">國際資訊安全管理系統認證</div></div></li>
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">SSL 全站加密</div><div class="ts-item__desc">HTTPS 安全傳輸，保護用戶資料</div></div></li>
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">WAF 防火牆</div><div class="ts-item__desc">網站應用程式防火牆，即時防護</div></div></li>
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">每日自動備份</div><div class="ts-item__desc">可快速還原，資料不遺失</div></div></li>
-              <li class="ts-item"><div class="ts-item__dot"></div><div><div class="ts-item__name">後台權限分級</div><div class="ts-item__desc">依角色設定存取權限</div></div></li>
-            </ul>
-          </div>
         </div>
       </div>
     </section>
@@ -1612,10 +1662,10 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   const navMap = {
     about: 0,
     services: 3,
-    compare: 4,
-    process: 5,
-    cases: 6,
-    techsec: 8
+    techsec: 4,
+    compare: 5,
+    process: 6,
+    cases: 7
   };
 
   // ── Particles ──
@@ -1741,10 +1791,9 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
     const anims = slide.querySelectorAll('.anim');
 
     // Special animation for process slide
-    if (idx === 5) {
-      animateProcess(slide);
-      return;
-    }
+    if (idx === 6) { animateProcess(slide); return; }
+    // Special animation for design philosophy slide
+    if (idx === 7) { animatePhilosophy(slide); return; }
 
     gsap.fromTo(anims,
       { opacity: 0, y: 24 },
@@ -1806,6 +1855,32 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 
     // 4. Enable the continuous pulse
     tl.call(() => { timeline.classList.add('revealed'); });
+  }
+
+  function animatePhilosophy(slide) {
+    const tl = gsap.timeline();
+    const header = slide.querySelectorAll('.label, .title, .divider, .subtitle');
+    const rows = slide.querySelectorAll('.phi-row');
+
+    // 1. Header
+    tl.fromTo(header, { opacity: 0, y: 24 }, {
+      opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out'
+    });
+
+    // 2. Each row slides in with stagger
+    rows.forEach((row, i) => {
+      const line = row.querySelector('.phi-row__line');
+
+      tl.fromTo(row, { opacity: 0, x: -60 }, {
+        opacity: 1, x: 0, duration: 0.45, ease: 'power3.out',
+        onStart: () => row.classList.add('active')
+      }, `-=${i === 0 ? 0 : 0.25}`);
+
+      // Neon line extends
+      tl.fromTo(line, { scaleX: 0 }, {
+        scaleX: 1, duration: 0.4, ease: 'power2.out'
+      }, '-=0.25');
+    });
   }
 
   function runCountUp(slide) {
