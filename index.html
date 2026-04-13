@@ -1078,6 +1078,7 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   border-radius: 14px;
   padding: 2rem;
   border: 1px solid var(--border);
+  text-align: left;
 }
 
 .ts-block__header {
@@ -1121,7 +1122,7 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 .ts-item__desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.4; }
 
 /* ═══════════════════════════════════════════
-   SLIDE 11: CTA
+   SLIDE 11: CTA — MINIMAL + CREATIVE
    ═══════════════════════════════════════════ */
 .cta-content {
   text-align: center;
@@ -1137,46 +1138,83 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 
 .cta-bg {
   position: absolute;
-  top: -50%; left: -50%;
-  width: 200%; height: 200%;
-  background: radial-gradient(ellipse at 30% 50%, rgba(77,175,124,0.12) 0%, transparent 60%);
+  inset: 0;
+  overflow: hidden;
   pointer-events: none;
 }
 
+/* Animated radial pulse */
+.cta-bg::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 600px; height: 600px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(77,175,124,0.12) 0%, transparent 70%);
+  animation: cta-pulse 4s ease-in-out infinite;
+}
+
+.cta-bg::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 300px; height: 300px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(77,175,124,0.1);
+  animation: cta-ring 6s linear infinite;
+}
+
+@keyframes cta-pulse {
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.3); }
+}
+
+@keyframes cta-ring {
+  0% { width: 100px; height: 100px; opacity: 0.6; border-color: rgba(77,175,124,0.3); }
+  100% { width: 800px; height: 800px; opacity: 0; border-color: rgba(77,175,124,0); }
+}
+
+/* Orbiting particles */
+.cta-particle {
+  position: absolute;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  top: 50%; left: 50%;
+  animation: cta-orbit linear infinite;
+}
+
+.cta-particle:nth-child(1) { animation-duration: 8s; --orbit-r: 150px; animation-delay: 0s; }
+.cta-particle:nth-child(2) { animation-duration: 12s; --orbit-r: 220px; animation-delay: -3s; width: 3px; height: 3px; }
+.cta-particle:nth-child(3) { animation-duration: 10s; --orbit-r: 280px; animation-delay: -6s; width: 2px; height: 2px; opacity: 0.6; }
+
+@keyframes cta-orbit {
+  0% { transform: translate(-50%, -50%) rotate(0deg) translateX(var(--orbit-r)) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg) translateX(var(--orbit-r)) rotate(-360deg); }
+}
+
 .cta__title {
-  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 700;
-  line-height: 1.4;
+  line-height: 1.3;
+  margin-bottom: 1.5rem;
+}
+
+.cta__contact {
+  font-size: 1.15rem;
+  color: var(--text-light);
   margin-bottom: 0.5rem;
 }
 
-.cta__en {
-  font-family: var(--font-en);
-  font-size: clamp(1.05rem, 2vw, 1.35rem);
+.cta__contact a { color: var(--green); text-decoration: none; }
+
+.cta__sub {
+  font-size: 0.9rem;
   color: var(--text-muted);
-  letter-spacing: 0.05em;
-  margin-bottom: 1.75rem;
-}
-
-.cta__info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  font-size: 1.1rem;
-  color: var(--text-light);
-}
-
-.cta__info strong { color: var(--text); font-weight: 600; }
-.cta__info a { color: var(--green); text-decoration: none; }
-
-.cta__footer {
-  margin-top: 3rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border);
-  display: flex;
-  gap: 2rem;
-  font-size: 0.8rem;
-  color: var(--text-muted);
+  margin-top: 2rem;
 }
 
 /* ═══════════════════════════════════════════
@@ -1288,11 +1326,11 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   </div>
   <div class="topnav__menu" id="navMenu">
     <button class="topnav__btn topnav__btn--active" data-nav="about">關於馬亞</button>
-    <button class="topnav__btn" data-nav="compare">套版 vs 客製</button>
     <button class="topnav__btn" data-nav="services">服務項目</button>
+    <button class="topnav__btn" data-nav="techsec">技術資安</button>
+    <button class="topnav__btn" data-nav="compare">套版 vs 客製</button>
     <button class="topnav__btn" data-nav="process">合作流程</button>
     <button class="topnav__btn" data-nav="cases">精選案例</button>
-    <button class="topnav__btn" data-nav="techsec">技術資安</button>
   </div>
 </nav>
 
@@ -1606,25 +1644,19 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
       </div>
     </section>
 
-    <!-- ──── SLIDE 11: CTA ──── -->
-    <section class="slide slide--deep" data-section="techsec">
-      <div class="cta-bg"></div>
+    <!-- ──── SLIDE 10: CTA ──── -->
+    <section class="slide slide--deep">
+      <div class="cta-bg">
+        <div class="cta-particle"></div>
+        <div class="cta-particle"></div>
+        <div class="cta-particle"></div>
+      </div>
       <div class="cta-content">
-        <p class="label anim en">LET'S CREATE TOGETHER</p>
-        <h2 class="cta__title anim">你想要什麼風格<br>我們就往那個方向做</h2>
-        <p class="cta__en anim en">iWare Design & Development</p>
-        <div class="hero__divider anim" style="transform:scaleX(1); margin-bottom:1.75rem;"></div>
-        <div class="cta__info anim">
-          <p><strong>陳昱瑋 Wayne Chen</strong>｜業務經理</p>
-          <p><a href="mailto:wayne@iware.com.tw">wayne@iware.com.tw</a></p>
-          <p>02-2999-5660 分機 260</p>
-          <p>馬亞科技股份有限公司</p>
-        </div>
-        <div class="cta__footer anim">
-          <span class="en">Since 1996</span>
-          <span>台北 / 台中 / 台南</span>
-          <span class="en">ISO 27001:2022 Certified</span>
-        </div>
+        <p class="label anim en">THANK YOU</p>
+        <h2 class="cta__title anim">期待與您合作</h2>
+        <div class="hero__divider anim" style="transform:scaleX(1); margin-bottom:1.5rem;"></div>
+        <p class="cta__contact anim"><strong>陳昱瑋 Wayne</strong>｜<a href="mailto:wayne@iware.com.tw">wayne@iware.com.tw</a>｜02-2999-5660 #260</p>
+        <p class="cta__sub anim en">iWare Design &mdash; Since 1996</p>
       </div>
     </section>
 
