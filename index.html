@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IWARE x 蓋亞智庫 — 30 年深耕，為企業打造卓越數位體驗</title>
 <meta name="description" content="馬亞科技 iWare — 30年網頁設計與開發經驗，ISO 27001 認證，為您打造專業數位體驗">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%230A0E17'/><text x='50' y='62' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='42' fill='%234DAF7C'>iW</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -444,108 +444,85 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 /* ═══════════════════════════════════════════
    SLIDE 3: DESIGN PHILOSOPHY — CINEMATIC ROWS
    ═══════════════════════════════════════════ */
-.phi-rows {
-  margin-top: 2rem;
-  display: flex;
-  flex-direction: column;
-  max-width: 900px;
+.phi-grid {
+  margin-top: 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 840px;
   margin-left: auto;
   margin-right: auto;
 }
 
-.phi-row {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 1.4rem 1.5rem;
+.phi-card {
   position: relative;
-  border-bottom: 1px solid rgba(77,175,124,0.08);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 2rem 1.8rem;
+  overflow: hidden;
+  transition: border-color 0.4s, transform 0.4s;
 }
 
-.phi-row:last-child { border-bottom: none; }
+.phi-card:hover {
+  border-color: rgba(77,175,124,0.35);
+  transform: translateY(-4px);
+}
 
-/* Left neon bar */
-.phi-row::before {
+/* Corner accent — top-left green chamfer */
+.phi-card::before {
   content: '';
   position: absolute;
-  left: 0; top: 10%; bottom: 10%;
-  width: 3px;
-  background: var(--green);
-  box-shadow: 0 0 8px rgba(77,175,124,0.5), 0 0 20px rgba(77,175,124,0.2);
-  border-radius: 2px;
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 0.5s ease;
+  top: 0; left: 0;
+  width: 50px; height: 50px;
+  background: linear-gradient(135deg, var(--green) 0%, var(--green) 50%, transparent 50%);
+  opacity: 0.15;
 }
 
-.phi-row.active::before {
-  transform: scaleY(1);
+/* Bottom glow line */
+.phi-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 10%; right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  opacity: 0;
+  transition: opacity 0.4s;
 }
 
-/* Hover glow */
-.phi-row:hover {
-  background: rgba(77,175,124,0.03);
-}
+.phi-card:hover::after { opacity: 0.6; }
 
-.phi-row__num {
+.phi-card__num {
   font-family: var(--font-en);
-  font-size: 2.8rem;
+  font-size: 3.2rem;
   font-weight: 800;
   color: var(--green);
-  min-width: 85px;
-  text-shadow: 0 0 25px rgba(77,175,124,0.4);
   line-height: 1;
-  opacity: 0.85;
+  opacity: 0.18;
+  position: absolute;
+  top: 12px; right: 18px;
 }
 
-.phi-row__word {
+.phi-card__word {
   font-size: 2rem;
   font-weight: 700;
-  min-width: 100px;
-  white-space: nowrap;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
-.phi-row__line {
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(77,175,124,0.5), rgba(77,175,124,0.05));
-  position: relative;
-  transform-origin: left;
-}
-
-/* Neon pulse on the line */
-.phi-row__line::after {
+.phi-card__word::after {
   content: '';
-  position: absolute;
-  top: -2px; left: 0;
-  width: 40px; height: 5px;
-  background: linear-gradient(90deg, transparent, var(--green), transparent);
-  box-shadow: 0 0 10px var(--green);
-  border-radius: 3px;
-  animation: phi-line-pulse 2s ease-in-out infinite;
-  opacity: 0;
+  height: 2px;
+  flex: 1;
+  background: linear-gradient(90deg, var(--green), transparent);
+  opacity: 0.3;
 }
 
-.phi-row.active .phi-row__line::after { opacity: 1; }
-
-.phi-row:nth-child(1) .phi-row__line::after { animation-delay: 0s; }
-.phi-row:nth-child(2) .phi-row__line::after { animation-delay: 0.5s; }
-.phi-row:nth-child(3) .phi-row__line::after { animation-delay: 1s; }
-.phi-row:nth-child(4) .phi-row__line::after { animation-delay: 1.5s; }
-
-@keyframes phi-line-pulse {
-  0% { left: -40px; opacity: 0; }
-  15% { opacity: 1; }
-  85% { opacity: 1; }
-  100% { left: 100%; opacity: 0; }
-}
-
-.phi-row__desc {
-  font-size: 1rem;
-  color: var(--text-light);
-  max-width: 380px;
-  line-height: 1.55;
-  flex-shrink: 0;
+.phi-card__desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.65;
 }
 
 /* ═══════════════════════════════════════════
@@ -1323,6 +1300,7 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   .steps-grid::before { display: none; }
   .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
   .ts-grid { grid-template-columns: 1fr; }
+  .phi-grid { gap: 16px; }
 }
 
 @media (max-width: 768px) {
@@ -1340,6 +1318,7 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   .hero__meta { flex-direction: column; gap: 0.4rem; }
   .compare-table { font-size: 0.78rem; }
   .cta__footer { flex-direction: column; align-items: center; }
+  .phi-grid { grid-template-columns: 1fr; max-width: 420px; }
 }
 </style>
 </head>
@@ -1639,30 +1618,26 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
         <h2 class="title anim">聆聽、溝通、觀察、設計</h2>
         <div class="divider anim"></div>
         <p class="subtitle anim">每個專案都從理解你的品牌開始，不套公式、不走捷徑</p>
-        <div class="phi-rows">
-          <div class="phi-row">
-            <span class="phi-row__num en">01</span>
-            <span class="phi-row__word">聆聽</span>
-            <span class="phi-row__line"></span>
-            <span class="phi-row__desc">深入了解品牌核心與需求，仔細聽取客戶的聲音與想法</span>
+        <div class="phi-grid">
+          <div class="phi-card anim">
+            <span class="phi-card__num en">01</span>
+            <div class="phi-card__word">聆聽</div>
+            <p class="phi-card__desc">深入了解品牌核心與需求，仔細聽取客戶的聲音與想法</p>
           </div>
-          <div class="phi-row">
-            <span class="phi-row__num en">02</span>
-            <span class="phi-row__word">溝通</span>
-            <span class="phi-row__line"></span>
-            <span class="phi-row__desc">確認目標、釐清方向，來回討論找出最適合的定位</span>
+          <div class="phi-card anim">
+            <span class="phi-card__num en">02</span>
+            <div class="phi-card__word">溝通</div>
+            <p class="phi-card__desc">確認目標、釐清方向，來回討論找出最適合的定位</p>
           </div>
-          <div class="phi-row">
-            <span class="phi-row__num en">03</span>
-            <span class="phi-row__word">觀察</span>
-            <span class="phi-row__line"></span>
-            <span class="phi-row__desc">研究市場趨勢與競品，掌握業界最新技術與做法</span>
+          <div class="phi-card anim">
+            <span class="phi-card__num en">03</span>
+            <div class="phi-card__word">觀察</div>
+            <p class="phi-card__desc">研究市場趨勢與競品，掌握業界最新技術與做法</p>
           </div>
-          <div class="phi-row">
-            <span class="phi-row__num en">04</span>
-            <span class="phi-row__word">設計</span>
-            <span class="phi-row__line"></span>
-            <span class="phi-row__desc">打造獨一無二的品牌網站，讓客戶滿意、使用者好用</span>
+          <div class="phi-card anim">
+            <span class="phi-card__num en">04</span>
+            <div class="phi-card__word">設計</div>
+            <p class="phi-card__desc">打造獨一無二的品牌網站，讓客戶滿意、使用者好用</p>
           </div>
         </div>
       </div>
@@ -1976,27 +1951,17 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   function animatePhilosophy(slide) {
     const tl = gsap.timeline();
     const header = slide.querySelectorAll('.label, .title, .divider, .subtitle');
-    const rows = slide.querySelectorAll('.phi-row');
+    const cards = slide.querySelectorAll('.phi-card');
 
     // 1. Header
     tl.fromTo(header, { opacity: 0, y: 24 }, {
       opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out'
     });
 
-    // 2. Each row slides in with stagger
-    rows.forEach((row, i) => {
-      const line = row.querySelector('.phi-row__line');
-
-      tl.fromTo(row, { opacity: 0, x: -60 }, {
-        opacity: 1, x: 0, duration: 0.45, ease: 'power3.out',
-        onStart: () => row.classList.add('active')
-      }, `-=${i === 0 ? 0 : 0.25}`);
-
-      // Neon line extends
-      tl.fromTo(line, { scaleX: 0 }, {
-        scaleX: 1, duration: 0.4, ease: 'power2.out'
-      }, '-=0.25');
-    });
+    // 2. Cards stagger in with scale + rotation
+    tl.fromTo(cards, { opacity: 0, y: 50, scale: 0.9 }, {
+      opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.15, ease: 'back.out(1.4)'
+    }, '-=0.2');
   }
 
   function runCountUp(slide) {
