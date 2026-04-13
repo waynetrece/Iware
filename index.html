@@ -20,7 +20,9 @@
   --green: #4DAF7C;
   --green-dark: #3A8F64;
   --green-light: rgba(77, 175, 124, 0.12);
-  --green-glow: rgba(77, 175, 124, 0.4);
+  --green-glow: rgba(77, 175, 124, 0.6);
+  --neon-shadow: 0 0 10px rgba(77, 175, 124, 0.4), 0 0 30px rgba(77, 175, 124, 0.15);
+  --neon-shadow-strong: 0 0 15px rgba(77, 175, 124, 0.6), 0 0 40px rgba(77, 175, 124, 0.25), 0 0 80px rgba(77, 175, 124, 0.1);
   --text: #FFFFFF;
   --text-light: #E0E6EB;
   --text-muted: #CBD5DE;
@@ -116,6 +118,8 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 .topnav__btn--active {
   color: var(--green);
   background: var(--green-light);
+  box-shadow: var(--neon-shadow);
+  text-shadow: 0 0 8px rgba(77,175,124,0.5);
 }
 
 /* ═══════════════════════════════════════════
@@ -283,6 +287,7 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   background: var(--green);
   border-radius: 2px;
   margin: 1rem 0 1.25rem;
+  box-shadow: var(--neon-shadow);
 }
 
 /* Center layout */
@@ -319,6 +324,7 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   top: 50%; left: 50%;
   margin: -250px 0 0 -250px;
   animation-duration: 25s;
+  box-shadow: 0 0 30px rgba(77,175,124,0.1), inset 0 0 30px rgba(77,175,124,0.05);
 }
 
 .hero-bg::after {
@@ -328,7 +334,8 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   animation-duration: 35s;
   animation-direction: reverse;
   border-style: dashed;
-  border-color: rgba(77,175,124,0.08);
+  border-color: rgba(77,175,124,0.12);
+  box-shadow: 0 0 50px rgba(77,175,124,0.08);
 }
 
 @keyframes hero-orbit {
@@ -367,6 +374,7 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   font-weight: 900;
   line-height: 1.15;
   margin-bottom: 1.5rem;
+  text-shadow: 0 0 30px rgba(255,255,255,0.15);
 }
 
 .hero__title .char {
@@ -416,6 +424,7 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   font-weight: 700;
   color: var(--green);
   line-height: 1;
+  text-shadow: 0 0 20px rgba(77,175,124,0.6), 0 0 40px rgba(77,175,124,0.3);
 }
 
 .stat__label {
@@ -452,8 +461,8 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 
 .phi-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(77,175,124,0.3);
-  box-shadow: 0 12px 32px rgba(77,175,124,0.1);
+  border-color: rgba(77,175,124,0.4);
+  box-shadow: var(--neon-shadow-strong);
 }
 
 .phi-card__num {
@@ -533,7 +542,8 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 
 .team-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 20px 40px rgba(77,175,124,0.15);
+  box-shadow: var(--neon-shadow-strong);
+  border-color: rgba(77,175,124,0.4);
 }
 
 .team-card:hover::before { opacity: 1; }
@@ -702,7 +712,8 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 
 .svc-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(77,175,124,0.3);
+  border-color: rgba(77,175,124,0.4);
+  box-shadow: var(--neon-shadow-strong);
 }
 
 .svc-card__head {
@@ -887,7 +898,8 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 
 .pf-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(77,175,124,0.3);
+  border-color: rgba(77,175,124,0.4);
+  box-shadow: var(--neon-shadow-strong);
 }
 
 .pf-card__emoji { font-size: 1.8rem; margin-bottom: 0.6rem; }
@@ -1027,6 +1039,40 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 }
 
 /* ═══════════════════════════════════════════
+   CYBERPUNK SCANLINES OVERLAY
+   ═══════════════════════════════════════════ */
+.scanlines {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 99;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  opacity: 0.5;
+}
+
+/* Neon glow on green labels */
+.label {
+  text-shadow: 0 0 10px rgba(77,175,124,0.4);
+}
+
+/* Step number glow */
+.step__num {
+  box-shadow: var(--neon-shadow);
+}
+
+/* CTA title glow */
+.cta__title {
+  text-shadow: 0 0 20px rgba(77,175,124,0.3);
+}
+
+/* ═══════════════════════════════════════════
    FLOATING PARTICLES
    ═══════════════════════════════════════════ */
 .particles {
@@ -1088,6 +1134,9 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 </style>
 </head>
 <body>
+
+<!-- ═══ Cyberpunk Scanlines ═══ -->
+<div class="scanlines"></div>
 
 <!-- ═══ Particles ═══ -->
 <div class="particles" id="particles"></div>
