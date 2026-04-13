@@ -1396,10 +1396,163 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   .compare-table { font-size: 0.78rem; }
   .cta__footer { flex-direction: column; align-items: center; }
   .phi-grid { grid-template-columns: 1fr; max-width: 420px; }
+  .cursor-glow, .cursor-dot { display: none !important; }
+}
+
+/* ═══════════════════════════════════════════
+   CUSTOM GLOWING CURSOR
+   ═══════════════════════════════════════════ */
+.cursor-glow {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(77,175,124,0.25) 0%, transparent 70%);
+  box-shadow: 0 0 20px rgba(77,175,124,0.35), 0 0 50px rgba(77,175,124,0.15), 0 0 90px rgba(77,175,124,0.06);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, box-shadow 0.3s, background 0.3s;
+  mix-blend-mode: screen;
+}
+
+.cursor-dot {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green), 0 0 12px rgba(77,175,124,0.6);
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+}
+
+.cursor-glow.cursor-hover {
+  width: 70px;
+  height: 70px;
+  box-shadow: 0 0 30px rgba(77,175,124,0.5), 0 0 70px rgba(77,175,124,0.25), 0 0 120px rgba(77,175,124,0.1);
+  background: radial-gradient(circle, rgba(77,175,124,0.3) 0%, transparent 70%);
+}
+
+/* ═══════════════════════════════════════════
+   THREE.JS CANVAS BACKGROUND
+   ═══════════════════════════════════════════ */
+#vrCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.28;
+}
+
+/* Make sure the slide__inner inside vr360 slide sits above canvas */
+[data-section="vr360"] .slide__inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* ═══════════════════════════════════════════
+   3D TILT CARDS
+   ═══════════════════════════════════════════ */
+.tilt-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+  position: relative;
+  overflow: hidden;
+}
+
+.tilt-card .tilt-shine {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at 50% 50%, rgba(77,175,124,0.18) 0%, transparent 60%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 2;
+}
+
+.tilt-card:hover .tilt-shine {
+  opacity: 1;
+}
+
+/* ═══════════════════════════════════════════
+   PORTFOLIO CARD SHINE SWEEP
+   ═══════════════════════════════════════════ */
+.pf-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.pf-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255,255,255,0.22) 50%,
+    transparent 70%
+  );
+  transform: skewX(-15deg);
+  transition: left 0s;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.pf-card:hover::after {
+  left: 160%;
+  transition: left 0.55s ease;
+}
+
+/* ═══════════════════════════════════════════
+   MAGNETIC BUTTON BASE
+   ═══════════════════════════════════════════ */
+.magnetic {
+  position: relative;
+  display: inline-block;
+  transition: box-shadow 0.3s;
+}
+
+.magnetic:hover {
+  box-shadow: 0 0 20px rgba(77,175,124,0.4), 0 0 40px rgba(77,175,124,0.15);
+}
+
+/* ═══════════════════════════════════════════
+   TEXT SCRAMBLE — characters visible during decode
+   ═══════════════════════════════════════════ */
+.scramble-char {
+  display: inline-block;
+  color: var(--green);
+  transition: color 0.1s;
+}
+
+.scramble-char.resolved {
+  color: inherit;
+}
+
+/* ═══════════════════════════════════════════
+   PARALLAX SLIDE INNER
+   ═══════════════════════════════════════════ */
+.slide__inner,
+.hero-content,
+.cta-content {
+  will-change: transform;
 }
 </style>
 </head>
 <body>
+
+<!-- ═══ Custom Cursor ═══ -->
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="cursor-dot" id="cursorDot"></div>
 
 <!-- ═══ Cyberpunk Scanlines ═══ -->
 <div class="scanlines"></div>
@@ -1595,44 +1748,45 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 
     <!-- ──── SLIDE 05: 3D PANORAMIC ──── -->
     <section class="slide slide--alt" data-section="vr360">
+      <canvas id="vrCanvas"></canvas>
       <div class="slide__inner centered">
         <p class="label anim en">3D VIRTUAL TOUR</p>
         <h2 class="title anim">3D 環景掃描服務</h2>
         <div class="divider anim"></div>
         <p class="subtitle anim">Matterport 專業設備，現場 3D 掃描打造沉浸式虛擬空間導覽</p>
         <div class="vr-grid">
-          <div class="vr-card anim">
+          <div class="vr-card tilt-card anim">
             <div class="vr-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
             <h3 class="vr-card__title">場域導覽</h3>
             <p class="vr-card__desc">身臨其境的體驗，在具有深度與空間感的場景中自由流暢地走動</p>
           </div>
-          <div class="vr-card anim">
+          <div class="vr-card tilt-card anim">
             <div class="vr-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
             <h3 class="vr-card__title">娃娃屋視角</h3>
             <p class="vr-card__desc">3D 立體影像提供場景的整體概覽配置，一覽空間全貌</p>
           </div>
-          <div class="vr-card anim">
+          <div class="vr-card tilt-card anim">
             <div class="vr-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h20"/><path d="M5 20V8l7-5 7 5v12"/><line x1="9" y1="20" x2="9" y2="12"/><line x1="15" y1="20" x2="15" y2="12"/></svg></div>
             <h3 class="vr-card__title">空間測量</h3>
             <p class="vr-card__desc">線上即可測量場景中物件的大小、長度、距離等尺寸</p>
           </div>
-          <div class="vr-card anim">
+          <div class="vr-card tilt-card anim">
             <div class="vr-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
             <h3 class="vr-card__title">互動標籤點</h3>
             <p class="vr-card__desc">添加文字、圖片、影音、超連結等內容，大幅提升場景互動感</p>
           </div>
-          <div class="vr-card anim">
+          <div class="vr-card tilt-card anim">
             <div class="vr-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
             <h3 class="vr-card__title">權限控管</h3>
             <p class="vr-card__desc">加密保護重要場域資訊，僅提供給授權相關人員使用</p>
           </div>
-          <div class="vr-card anim">
+          <div class="vr-card tilt-card anim">
             <div class="vr-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
             <h3 class="vr-card__title">網頁 &amp; 社群整合</h3>
             <p class="vr-card__desc">整合至官網，亦可透過 FB、IG、Google 商家等社群平台分享</p>
           </div>
         </div>
-        <a href="https://3dspace.iware.com.tw/" target="_blank" class="vr-cta anim" style="display:inline-block; margin-top:1.2rem; padding:0.6rem 1.6rem; border:1px solid var(--green); color:var(--green); font-size:0.88rem; font-weight:600; border-radius:6px; text-decoration:none; transition:all 0.3s;">了解更多 3D 環景服務 &rarr;</a>
+        <a href="https://3dspace.iware.com.tw/" target="_blank" class="vr-cta magnetic anim" style="display:inline-block; margin-top:1.2rem; padding:0.6rem 1.6rem; border:1px solid var(--green); color:var(--green); font-size:0.88rem; font-weight:600; border-radius:6px; text-decoration:none; transition:all 0.3s;">了解更多 3D 環景服務 &rarr;</a>
       </div>
     </section>
 
@@ -1886,17 +2040,264 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 </div>
 
 <!-- ═══ SCRIPTS ═══ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
 (function() {
   'use strict';
 
-  // ── Config ──
-  const track = document.getElementById('track');
+  // ═══════════════════════════════════════════
+  // EFFECT 4: CUSTOM GLOWING CURSOR
+  // ═══════════════════════════════════════════
+  const cursorGlow = document.getElementById('cursorGlow');
+  const cursorDot  = document.getElementById('cursorDot');
+  let mouseX = -200, mouseY = -200;
+  let glowX = -200, glowY = -200;
+  let dotX  = -200, dotY  = -200;
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  // Lerp cursor trailing
+  (function lerpLoop() {
+    glowX += (mouseX - glowX) * 0.09;
+    glowY += (mouseY - glowY) * 0.09;
+    dotX  += (mouseX - dotX)  * 0.55;
+    dotY  += (mouseY - dotY)  * 0.55;
+
+    cursorGlow.style.left = glowX + 'px';
+    cursorGlow.style.top  = glowY + 'px';
+    cursorDot.style.left  = dotX  + 'px';
+    cursorDot.style.top   = dotY  + 'px';
+    requestAnimationFrame(lerpLoop);
+  })();
+
+  // Hover expand on interactive elements
+  const hoverTargets = '.pf-card, .vr-card, .topnav__btn, .svc-card, .team-card, .phi-card, .magnetic, .vr-case, .vr-app, .controls__arrow';
+  document.querySelectorAll(hoverTargets).forEach(el => {
+    el.addEventListener('mouseenter', () => cursorGlow.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => cursorGlow.classList.remove('cursor-hover'));
+  });
+
+  // ═══════════════════════════════════════════
+  // EFFECT 3: TEXT SCRAMBLE
+  // ═══════════════════════════════════════════
+  const SCRAMBLE_CHARS = '█▓░▒▐▌┃╋※◆■▪▸◈⬡⬢';
+
+  function scrambleText(element, callback) {
+    const original = element.textContent;
+    const chars = original.split('');
+    // Wrap each char in a span
+    element.innerHTML = chars.map((ch, i) =>
+      `<span class="scramble-char" data-char="${ch}" data-idx="${i}">${ch === ' ' ? '&nbsp;' : ch}</span>`
+    ).join('');
+
+    const spans = element.querySelectorAll('.scramble-char');
+    const totalMs = 40 * spans.length + 300; // resolve time budget
+
+    spans.forEach((span, i) => {
+      const originalChar = chars[i];
+      if (originalChar === ' ') { span.classList.add('resolved'); return; }
+
+      // Scramble phase: cycle random chars
+      let scrambleCount = 0;
+      const maxScrambles = 6 + Math.floor(Math.random() * 6);
+      const scrambleInterval = setInterval(() => {
+        span.textContent = SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+        scrambleCount++;
+        if (scrambleCount >= maxScrambles) {
+          clearInterval(scrambleInterval);
+        }
+      }, 35);
+
+      // Resolve after staggered delay
+      setTimeout(() => {
+        clearInterval(scrambleInterval);
+        span.textContent = originalChar;
+        span.classList.add('resolved');
+      }, 80 + i * 38);
+    });
+
+    if (callback) setTimeout(callback, totalMs);
+  }
+
+  // ═══════════════════════════════════════════
+  // EFFECT 2: 3D TILT CARDS
+  // ═══════════════════════════════════════════
+  function initTiltCards() {
+    document.querySelectorAll('.tilt-card').forEach(card => {
+      // Add shine overlay element
+      if (!card.querySelector('.tilt-shine')) {
+        const shine = document.createElement('div');
+        shine.className = 'tilt-shine';
+        card.appendChild(shine);
+      }
+      const shine = card.querySelector('.tilt-shine');
+
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const cx = rect.left + rect.width  / 2;
+        const cy = rect.top  + rect.height / 2;
+        const dx = (e.clientX - cx) / (rect.width  / 2);
+        const dy = (e.clientY - cy) / (rect.height / 2);
+        const rotX = -dy * 10;
+        const rotY =  dx * 10;
+
+        card.style.transform =
+          `perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.02)`;
+        card.style.transition = 'transform 0.1s ease';
+
+        // Move shine to cursor position
+        const sx = ((e.clientX - rect.left) / rect.width)  * 100;
+        const sy = ((e.clientY - rect.top)  / rect.height) * 100;
+        shine.style.background =
+          `radial-gradient(circle at ${sx}% ${sy}%, rgba(77,175,124,0.22) 0%, transparent 55%)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transition = 'transform 0.5s cubic-bezier(0.16,1,0.3,1)';
+        card.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)';
+        shine.style.background = '';
+      });
+    });
+  }
+
+  // ═══════════════════════════════════════════
+  // EFFECT 5: MAGNETIC CTA BUTTONS
+  // ═══════════════════════════════════════════
+  function initMagneticButtons() {
+    document.querySelectorAll('.magnetic').forEach(btn => {
+      const RADIUS = 100;
+
+      document.addEventListener('mousemove', e => {
+        const rect = btn.getBoundingClientRect();
+        const bx = rect.left + rect.width  / 2;
+        const by = rect.top  + rect.height / 2;
+        const dist = Math.hypot(e.clientX - bx, e.clientY - by);
+
+        if (dist < RADIUS) {
+          const pull = (1 - dist / RADIUS) * 0.35;
+          const mx = (e.clientX - bx) * pull;
+          const my = (e.clientY - by) * pull;
+          gsap.to(btn, { x: mx, y: my, duration: 0.4, ease: 'power2.out' });
+        } else {
+          gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
+        }
+      });
+
+      btn.addEventListener('mouseleave', () => {
+        gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
+      });
+    });
+  }
+
+  // ═══════════════════════════════════════════
+  // EFFECT 1: THREE.JS WIREFRAME BACKGROUND
+  // ═══════════════════════════════════════════
+  let vrThreeInited = false;
+  let vrRenderer, vrScene, vrCamera, vrAnimId;
+  let vrMesh, vrParticles, vrMouseX = 0, vrMouseY = 0;
+
+  function initVrThree() {
+    if (vrThreeInited || typeof THREE === 'undefined') return;
+    vrThreeInited = true;
+
+    const canvas = document.getElementById('vrCanvas');
+    if (!canvas) return;
+
+    vrRenderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    vrRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    vrRenderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    vrRenderer.setClearColor(0x000000, 0);
+
+    vrScene = new THREE.Scene();
+    vrCamera = new THREE.PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
+    vrCamera.position.z = 3.5;
+
+    // Icosahedron wireframe
+    const geo = new THREE.IcosahedronGeometry(1.4, 1);
+    const mat = new THREE.MeshBasicMaterial({
+      color: 0x4DAF7C,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.7
+    });
+    vrMesh = new THREE.Mesh(geo, mat);
+    vrScene.add(vrMesh);
+
+    // Second larger icosahedron (rotates opposite)
+    const geo2 = new THREE.IcosahedronGeometry(2.2, 0);
+    const mat2 = new THREE.MeshBasicMaterial({
+      color: 0x4DAF7C,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.2
+    });
+    const mesh2 = new THREE.Mesh(geo2, mat2);
+    vrScene.add(mesh2);
+    vrMesh._companion = mesh2;
+
+    // Scattered particles
+    const pGeo = new THREE.BufferGeometry();
+    const pCount = 120;
+    const pPos = new Float32Array(pCount * 3);
+    for (let i = 0; i < pCount * 3; i++) {
+      pPos[i] = (Math.random() - 0.5) * 9;
+    }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    const pMat = new THREE.PointsMaterial({
+      color: 0x4DAF7C,
+      size: 0.04,
+      transparent: true,
+      opacity: 0.8
+    });
+    vrParticles = new THREE.Points(pGeo, pMat);
+    vrScene.add(vrParticles);
+
+    // Mouse parallax
+    document.addEventListener('mousemove', e => {
+      vrMouseX = (e.clientX / window.innerWidth  - 0.5) * 2;
+      vrMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    });
+
+    function vrAnimate() {
+      vrAnimId = requestAnimationFrame(vrAnimate);
+      const t = Date.now() * 0.001;
+
+      vrMesh.rotation.x = t * 0.18 + vrMouseY * 0.3;
+      vrMesh.rotation.y = t * 0.22 + vrMouseX * 0.3;
+      vrMesh._companion.rotation.x = -t * 0.10 - vrMouseY * 0.15;
+      vrMesh._companion.rotation.y = -t * 0.14 - vrMouseX * 0.15;
+      vrParticles.rotation.y = t * 0.04;
+
+      vrRenderer.render(vrScene, vrCamera);
+    }
+    vrAnimate();
+
+    // Resize
+    window.addEventListener('resize', () => {
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      vrRenderer.setSize(w, h);
+      vrCamera.aspect = w / h;
+      vrCamera.updateProjectionMatrix();
+    });
+  }
+
+  // ─────────────────────────────────────────────
+  // CONFIG
+  // ─────────────────────────────────────────────
+  const track  = document.getElementById('track');
   const slides = Array.from(track.children);
-  const total = slides.length;
-  let current = 0;
+  const total  = slides.length;
+  let current    = 0;
   let isAnimating = false;
+
+  // VR slide indices (data-section="vr360")
+  const vrSlideIndices = slides
+    .map((s, i) => s.dataset.section === 'vr360' ? i : -1)
+    .filter(i => i >= 0);
 
   // Nav section mapping: nav button -> first slide index
   const navMap = {
@@ -1931,11 +2332,46 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
     dotsEl.appendChild(d);
   });
 
+  // ═══════════════════════════════════════════
+  // EFFECT 6: PARALLAX CONTENT ON TRANSITION
+  // ═══════════════════════════════════════════
+  function parallaxOut(slideIdx, direction) {
+    const slide = slides[slideIdx];
+    const inner = slide.querySelector('.slide__inner') ||
+                  slide.querySelector('.hero-content') ||
+                  slide.querySelector('.cta-content');
+    if (!inner) return;
+    const offset = direction * -45;
+    gsap.fromTo(inner,
+      { x: 0 },
+      { x: offset, opacity: 0.4, duration: 0.5, ease: 'power2.in' }
+    );
+  }
+
+  function parallaxIn(slideIdx, direction) {
+    const slide = slides[slideIdx];
+    const inner = slide.querySelector('.slide__inner') ||
+                  slide.querySelector('.hero-content') ||
+                  slide.querySelector('.cta-content');
+    if (!inner) return;
+    const fromOffset = direction * 45;
+    gsap.fromTo(inner,
+      { x: fromOffset, opacity: 0.4 },
+      { x: 0, opacity: 1, duration: 0.65, ease: 'power2.out' }
+    );
+  }
+
   // ── Navigation ──
   function goTo(idx) {
     if (idx < 0 || idx >= total || idx === current || isAnimating) return;
     isAnimating = true;
+
+    const direction = idx > current ? 1 : -1;
+    const prev = current;
     current = idx;
+
+    // Parallax out on leaving slide
+    parallaxOut(prev, direction);
 
     gsap.to(track, {
       x: -current * window.innerWidth,
@@ -1943,7 +2379,20 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
       ease: 'power2.inOut',
       onComplete: () => {
         isAnimating = false;
+        // Reset the previous slide inner position for re-entry
+        const prevInner = slides[prev].querySelector('.slide__inner') ||
+                          slides[prev].querySelector('.hero-content') ||
+                          slides[prev].querySelector('.cta-content');
+        if (prevInner) gsap.set(prevInner, { x: 0, opacity: 1 });
+
+        // Parallax in for arriving slide
+        parallaxIn(current, direction);
         animateSlide(current);
+
+        // Lazy-init Three.js when first landing on a vr360 slide
+        if (vrSlideIndices.includes(current)) {
+          setTimeout(initVrThree, 100);
+        }
       }
     });
 
@@ -1951,20 +2400,16 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   }
 
   function updateUI() {
-    // Counter
     document.getElementById('counter').textContent =
       String(current + 1).padStart(2, '0') + '/' + String(total).padStart(2, '0');
 
-    // Dots
     dotsEl.querySelectorAll('.controls__dot').forEach((d, i) => {
       d.classList.toggle('controls__dot--active', i === current);
     });
 
-    // Arrows
     document.getElementById('prevBtn').disabled = current === 0;
     document.getElementById('nextBtn').disabled = current === total - 1;
 
-    // Nav buttons
     const section = slides[current].dataset.section;
     document.querySelectorAll('.topnav__btn').forEach(btn => {
       btn.classList.toggle('topnav__btn--active', btn.dataset.nav === section);
@@ -1974,7 +2419,6 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
   document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
 
-  // Nav menu clicks
   document.querySelectorAll('.topnav__btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const idx = navMap[btn.dataset.nav];
@@ -1982,31 +2426,27 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
     });
   });
 
-  // Keyboard
   document.addEventListener('keydown', e => {
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(current + 1);
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goTo(current - 1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goTo(current - 1);
   });
 
-  // Mouse wheel
   let wheelTimeout;
   document.addEventListener('wheel', e => {
     if (wheelTimeout) return;
     wheelTimeout = setTimeout(() => { wheelTimeout = null; }, 800);
-    if (e.deltaY > 30) goTo(current + 1);
+    if (e.deltaY > 30)  goTo(current + 1);
     else if (e.deltaY < -30) goTo(current - 1);
   }, { passive: true });
 
-  // Touch swipe
   let touchStartX = 0;
   document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
   document.addEventListener('touchend', e => {
     const dx = e.changedTouches[0].clientX - touchStartX;
-    if (dx > 60) goTo(current - 1);
+    if (dx > 60)  goTo(current - 1);
     else if (dx < -60) goTo(current + 1);
   });
 
-  // Resize
   window.addEventListener('resize', () => {
     gsap.set(track, { x: -current * window.innerWidth });
   });
@@ -2014,7 +2454,6 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   // ── Slide Animations ──
   const animated = new Set();
 
-  // Hide non-active slide anims via JS (not CSS)
   slides.forEach((slide, i) => {
     if (i !== 0) {
       slide.querySelectorAll('.anim').forEach(el => {
@@ -2030,12 +2469,18 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
     const slide = slides[idx];
     const anims = slide.querySelectorAll('.anim');
 
-    // Special animation for process slide
+    // Special slide handlers
     if (idx === 7) { animateProcess(slide); return; }
-    // Special animation for design philosophy slide
     if (idx === 8) { animatePhilosophy(slide); return; }
 
-    gsap.fromTo(anims,
+    // Find all .title elements for scramble effect
+    // Slide 0 hero title is handled separately by the heroTitle setTimeout at bottom
+    const titleSelector = '.title, .hero__title, .cta__title';
+    const titles = idx === 0 ? [] : Array.from(slide.querySelectorAll(titleSelector));
+    const nonTitles = Array.from(anims).filter(el => !el.matches(titleSelector));
+
+    // Non-title anims fade in first
+    gsap.fromTo(nonTitles,
       { opacity: 0, y: 24 },
       {
         opacity: 1,
@@ -2048,6 +2493,14 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
         }
       }
     );
+
+    // Title gets scramble effect
+    titles.forEach((titleEl, ti) => {
+      setTimeout(() => {
+        gsap.set(titleEl, { opacity: 1, y: 0 });
+        scrambleText(titleEl);
+      }, ti * 120 + 80);
+    });
   }
 
   function animateProcess(slide) {
@@ -2058,56 +2511,60 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
     const steps = slide.querySelectorAll('.step');
     const nodes = slide.querySelectorAll('.step__node');
 
-    // 1. Fade in header
+    // Scramble the title
+    const titleEl = slide.querySelector('.title');
+    if (titleEl) {
+      gsap.set(titleEl, { opacity: 1, y: 0 });
+      setTimeout(() => scrambleText(titleEl), 200);
+    }
+
     tl.fromTo(header, { opacity: 0, y: 24 }, {
       opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out'
     });
 
-    // 2. Draw the connecting line
     tl.to(lineFill, {
       scaleX: 1, duration: 1.2, ease: 'power2.inOut'
     }, '-=0.1');
 
-    // 3. Activate each node sequentially
     nodes.forEach((node, i) => {
       const step = steps[i];
       const title = step.querySelector('.step__title');
-      const desc = step.querySelector('.step__desc');
-      const list = step.querySelector('.step__list');
+      const desc  = step.querySelector('.step__desc');
       const items = step.querySelectorAll('.step__list li');
 
-      // Pop node
       tl.to(node, {
         opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(2)',
         onStart: () => { node.classList.add('active', 'burst'); }
       }, `-=${i === 0 ? 0.6 : 0.15}`);
 
-      // Slide in content
       tl.fromTo([title, desc], { opacity: 0, y: 16 }, {
         opacity: 1, y: 0, duration: 0.35, stagger: 0.06, ease: 'power2.out'
       }, '-=0.1');
 
-      // Stagger list items
       tl.fromTo(items, { opacity: 0, x: -10 }, {
         opacity: 1, x: 0, duration: 0.25, stagger: 0.05, ease: 'power2.out'
       }, '-=0.15');
     });
 
-    // 4. Enable the continuous pulse
     tl.call(() => { timeline.classList.add('revealed'); });
   }
 
   function animatePhilosophy(slide) {
     const tl = gsap.timeline();
     const header = slide.querySelectorAll('.label, .title, .divider, .subtitle');
-    const cards = slide.querySelectorAll('.phi-card');
+    const cards  = slide.querySelectorAll('.phi-card');
 
-    // 1. Header
+    // Scramble title
+    const titleEl = slide.querySelector('.title');
+    if (titleEl) {
+      gsap.set(titleEl, { opacity: 1, y: 0 });
+      setTimeout(() => scrambleText(titleEl), 200);
+    }
+
     tl.fromTo(header, { opacity: 0, y: 24 }, {
       opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out'
     });
 
-    // 2. Cards stagger in with scale + rotation
     tl.fromTo(cards, { opacity: 0, y: 50, scale: 0.9 }, {
       opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.15, ease: 'back.out(1.4)'
     }, '-=0.2');
@@ -2117,8 +2574,8 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
     slide.querySelectorAll('.stat__num').forEach(el => {
       const target = parseFloat(el.dataset.target);
       const suffix = el.dataset.suffix || '';
-      const dur = target > 100 ? 2000 : 1200;
-      const start = Date.now();
+      const dur    = target > 100 ? 2000 : 1200;
+      const start  = Date.now();
       (function step() {
         const p = Math.min((Date.now() - start) / dur, 1);
         const v = (1 - Math.pow(1 - p, 3)) * target;
@@ -2128,8 +2585,19 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
     });
   }
 
-  // First slide is visible by default (no CSS hiding), animate it in
+  // ── Init all effects ──
+  initTiltCards();
+  initMagneticButtons();
   animateSlide(0);
+
+  // Scramble hero title on load
+  const heroTitle = document.getElementById('heroTitle');
+  if (heroTitle) {
+    setTimeout(() => {
+      gsap.set(heroTitle, { opacity: 1, y: 0 });
+      scrambleText(heroTitle);
+    }, 350);
+  }
 
 })();
 </script>
