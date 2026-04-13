@@ -1019,48 +1019,82 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 
 
 /* ═══════════════════════════════════════════
-   SLIDE 9: PORTFOLIO
+   SLIDE 9: PORTFOLIO — SCREENSHOT CARDS
    ═══════════════════════════════════════════ */
 .portfolio-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
   margin-top: 2rem;
 }
 
 .pf-card {
   background: var(--bg-card);
   border-radius: 12px;
-  padding: 1.25rem;
+  overflow: hidden;
   border: 1px solid var(--border);
-  text-align: center;
   transition: transform 0.3s, border-color 0.3s;
 }
 
 .pf-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
   border-color: rgba(77,175,124,0.4);
   box-shadow: var(--neon-shadow-strong);
 }
 
-.pf-card__emoji { font-size: 1.8rem; margin-bottom: 0.6rem; }
-.pf-card__name { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.3rem; }
-.pf-card__type { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+.pf-card__img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: linear-gradient(135deg, #141c2a, #0d1520);
+  overflow: hidden;
+  position: relative;
+}
+
+.pf-card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.4s ease;
+}
+
+.pf-card:hover .pf-card__img img {
+  transform: scale(1.03);
+}
+
+.pf-card__body {
+  padding: 1.1rem 1.25rem;
+  text-align: center;
+}
+
+.pf-card__name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
 
 .pf-card__tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 6px;
   justify-content: center;
+  margin-bottom: 0.7rem;
 }
 
 .pf-tag {
   font-size: 0.78rem;
-  padding: 2px 8px;
+  padding: 3px 10px;
   border-radius: 12px;
   background: var(--green-light);
   color: var(--green);
   font-weight: 500;
+}
+
+.pf-card__url {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-family: var(--font-en);
+  letter-spacing: 0.02em;
 }
 
 /* ═══════════════════════════════════════════
@@ -1287,7 +1321,7 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   .svc-grid { grid-template-columns: repeat(2, 1fr); }
   .steps-grid { grid-template-columns: repeat(2, 1fr); }
   .steps-grid::before { display: none; }
-  .portfolio-grid { grid-template-columns: repeat(3, 1fr); }
+  .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
   .ts-grid { grid-template-columns: 1fr; }
 }
 
@@ -1632,14 +1666,54 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
         <div class="divider anim"></div>
         <p class="subtitle anim">深耕各產業，每個專案都是根據客戶品牌定位量身打造</p>
         <div class="portfolio-grid">
-          <div class="pf-card anim"><div class="pf-card__emoji">🏛️</div><div class="pf-card__name">工研院 MACSiMUM</div><div class="pf-card__type">機器學習平台</div><div class="pf-card__tags"><span class="pf-tag">介面設計</span><span class="pf-tag">會員管理</span></div></div>
-          <div class="pf-card anim"><div class="pf-card__emoji">❤️</div><div class="pf-card__name">中華民國心臟學會</div><div class="pf-card__type">會員 / 報名系統</div><div class="pf-card__tags"><span class="pf-tag">投審稿</span><span class="pf-tag">收據套印</span></div></div>
-          <div class="pf-card anim"><div class="pf-card__emoji">🍜</div><div class="pf-card__name">桂冠食品</div><div class="pf-card__type">品牌官網 / 電商</div><div class="pf-card__tags"><span class="pf-tag">食譜整合</span><span class="pf-tag">線上購物</span></div></div>
-          <div class="pf-card anim"><div class="pf-card__emoji">🏥</div><div class="pf-card__name">台灣職能治療學會</div><div class="pf-card__type">課程 / 積分管理</div><div class="pf-card__tags"><span class="pf-tag">期刊投稿</span><span class="pf-tag">會員繳費</span></div></div>
-          <div class="pf-card anim"><div class="pf-card__emoji">🌱</div><div class="pf-card__name">中研院淨零科技</div><div class="pf-card__type">內容 / 影音專區</div><div class="pf-card__tags"><span class="pf-tag">政策報告</span><span class="pf-tag">分類搜尋</span></div></div>
-          <div class="pf-card anim"><div class="pf-card__emoji">📊</div><div class="pf-card__name">台灣高血壓學會</div><div class="pf-card__type">衛教 / 活動直播</div><div class="pf-card__tags"><span class="pf-tag">學術資源</span><span class="pf-tag">會員內容</span></div></div>
-          <div class="pf-card anim"><div class="pf-card__emoji">📰</div><div class="pf-card__name">師大教育研究集刊</div><div class="pf-card__type">期刊系統</div><div class="pf-card__tags"><span class="pf-tag">投審稿</span><span class="pf-tag">多語系</span></div></div>
-          <div class="pf-card anim"><div class="pf-card__emoji">🏫</div><div class="pf-card__name">臺北市校園餘裕空間</div><div class="pf-card__type">資料查詢平台</div><div class="pf-card__tags"><span class="pf-tag">RWD</span><span class="pf-tag">無障礙</span></div></div>
+          <div class="pf-card anim">
+            <div class="pf-card__img"><img src="https://image.thum.io/get/width/600/crop/375/https://apsc-tsoc2026.tw" alt="中華民國心臟學會" loading="lazy"></div>
+            <div class="pf-card__body">
+              <div class="pf-card__name">中華民國心臟學會</div>
+              <div class="pf-card__tags"><span class="pf-tag">會員系統</span><span class="pf-tag">投審稿</span><span class="pf-tag">報名系統</span><span class="pf-tag">收據套印</span></div>
+              <div class="pf-card__url">apsc-tsoc2026.tw</div>
+            </div>
+          </div>
+          <div class="pf-card anim">
+            <div class="pf-card__img"><img src="https://image.thum.io/get/width/600/crop/375/https://www.tpvma.org.tw" alt="臺北市獸醫師公會" loading="lazy"></div>
+            <div class="pf-card__body">
+              <div class="pf-card__name">臺北市獸醫師公會</div>
+              <div class="pf-card__tags"><span class="pf-tag">會員專區</span><span class="pf-tag">會費繳納</span><span class="pf-tag">活動行事曆</span></div>
+              <div class="pf-card__url">tpvma.org.tw</div>
+            </div>
+          </div>
+          <div class="pf-card anim">
+            <div class="pf-card__img"><img src="https://image.thum.io/get/width/600/crop/375/https://www.ot.org.tw" alt="台灣職能治療學會" loading="lazy"></div>
+            <div class="pf-card__body">
+              <div class="pf-card__name">台灣職能治療學會</div>
+              <div class="pf-card__tags"><span class="pf-tag">課程報名</span><span class="pf-tag">積分管理</span><span class="pf-tag">期刊投稿</span><span class="pf-tag">會員繳費</span></div>
+              <div class="pf-card__url">ot.org.tw</div>
+            </div>
+          </div>
+          <div class="pf-card anim">
+            <div class="pf-card__img"><img src="https://image.thum.io/get/width/600/crop/375/https://www.laurel.com.tw" alt="桂冠食品" loading="lazy"></div>
+            <div class="pf-card__body">
+              <div class="pf-card__name">桂冠食品</div>
+              <div class="pf-card__tags"><span class="pf-tag">品牌官網</span><span class="pf-tag">食譜整合</span><span class="pf-tag">線上購物</span></div>
+              <div class="pf-card__url">laurel.com.tw</div>
+            </div>
+          </div>
+          <div class="pf-card anim">
+            <div class="pf-card__img"><img src="https://image.thum.io/get/width/600/crop/375/https://www.tsh.org.tw" alt="台灣高血壓學會" loading="lazy"></div>
+            <div class="pf-card__body">
+              <div class="pf-card__name">台灣高血壓學會</div>
+              <div class="pf-card__tags"><span class="pf-tag">學術資源</span><span class="pf-tag">衛教專區</span><span class="pf-tag">活動直播</span></div>
+              <div class="pf-card__url">tsh.org.tw</div>
+            </div>
+          </div>
+          <div class="pf-card anim">
+            <div class="pf-card__img"><img src="https://image.thum.io/get/width/600/crop/375/https://schoolspace.tp.edu.tw" alt="臺北市校園餘裕空間" loading="lazy"></div>
+            <div class="pf-card__body">
+              <div class="pf-card__name">臺北市校園餘裕空間</div>
+              <div class="pf-card__tags"><span class="pf-tag">資料查詢</span><span class="pf-tag">RWD</span><span class="pf-tag">無障礙</span></div>
+              <div class="pf-card__url">schoolspace.tp.edu.tw</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
