@@ -1061,8 +1061,8 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 .pf-full-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-  margin-top: 1.5rem;
+  gap: 14px;
+  margin-top: 1.2rem;
   max-width: 960px;
   margin-left: auto;
   margin-right: auto;
@@ -1071,78 +1071,87 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 .pf-card {
   display: block;
   text-decoration: none;
-  background: #fff;
-  border-radius: 8px;
+  position: relative;
+  background: var(--bg-card);
+  border-radius: 6px;
   overflow: hidden;
-  border: 1px solid rgba(0,0,0,0.06);
-  transition: transform 0.3s, box-shadow 0.3s;
+  border: 1px solid var(--border);
+  padding: 1.2rem 1.1rem 1rem;
   cursor: pointer;
+  transition: transform 0.35s var(--ease-out), border-color 0.35s, box-shadow 0.35s;
+}
+
+.pf-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--green);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.4s var(--ease-out);
 }
 
 .pf-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+  border-color: rgba(77,175,124,0.3);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 0 15px rgba(77,175,124,0.08);
 }
 
-.pf-card__img {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  background: #f0f0f0;
-  overflow: hidden;
+.pf-card:hover::before {
+  transform: scaleY(1);
 }
 
-.pf-card__img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top;
-  transition: transform 0.4s ease;
-}
-
-.pf-card:hover .pf-card__img img {
-  transform: scale(1.04);
-}
-
-.pf-card__body {
-  padding: 0.65rem 0.8rem;
-}
-
-.pf-card__url {
-  font-size: 0.68rem;
-  color: #999;
+.pf-card__idx {
+  position: absolute;
+  top: 8px; right: 12px;
   font-family: var(--font-en);
-  letter-spacing: 0.02em;
-  margin-bottom: 0.2rem;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.04);
+  line-height: 1;
+  pointer-events: none;
 }
 
 .pf-card__name {
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 0.25rem;
+  color: var(--text);
+  margin-bottom: 0.35rem;
+  line-height: 1.3;
 }
 
-.pf-card__desc {
-  font-size: 0.75rem;
-  color: #666;
-  line-height: 1.45;
-  margin-bottom: 0.35rem;
+.pf-card__url {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-family: var(--font-en);
+  letter-spacing: 0.02em;
+  margin-bottom: 0.6rem;
+  opacity: 0.6;
 }
+
+.pf-card:hover .pf-card__url { opacity: 1; color: var(--green); }
 
 .pf-card__tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 5px;
 }
 
 .pf-tag {
   font-size: 0.65rem;
-  padding: 2px 8px;
+  padding: 3px 9px;
   border-radius: 3px;
-  border: 1px solid rgba(77,175,124,0.4);
+  border: 1px solid rgba(77,175,124,0.25);
   color: var(--green);
   font-weight: 500;
-  background: transparent;
+  background: rgba(77,175,124,0.06);
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.pf-card:hover .pf-tag {
+  border-color: rgba(77,175,124,0.5);
+  background: rgba(77,175,124,0.12);
 }
 
 /* ═══════════════════════════════════════════
@@ -1483,11 +1492,6 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 /* ═══════════════════════════════════════════
    PORTFOLIO CARD SHINE SWEEP
    ═══════════════════════════════════════════ */
-.pf-card {
-  position: relative;
-  overflow: hidden;
-}
-
 .pf-card::after {
   content: '';
   position: absolute;
@@ -1498,7 +1502,7 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   background: linear-gradient(
     105deg,
     transparent 30%,
-    rgba(255,255,255,0.22) 50%,
+    rgba(77,175,124,0.1) 50%,
     transparent 70%
   );
   transform: skewX(-15deg);
@@ -1531,11 +1535,15 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 .scramble-char {
   display: inline-block;
   color: var(--green);
-  transition: color 0.1s;
+  opacity: 0.45;
+  font-family: var(--font-en);
+  transition: color 0.3s, opacity 0.3s;
 }
 
 .scramble-char.resolved {
   color: inherit;
+  opacity: 1;
+  font-family: inherit;
 }
 
 /* ═══════════════════════════════════════════
@@ -1943,28 +1951,40 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
         <p class="subtitle anim">深耕公協會、學會、政府機關，30 年同類型產業經驗｜<a href="https://www.iware.com.tw/works.html" target="_blank" style="color:var(--green);">更多案例 &rarr;</a></p>
         <div class="pf-full-grid">
           <a href="https://apsc-tsoc2026.tw" target="_blank" class="pf-card anim">
-            <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://apsc-tsoc2026.tw" alt="中華民國心臟學會" loading="lazy"></div>
-            <div class="pf-card__body"><div class="pf-card__url en">apsc-tsoc2026.tw</div><div class="pf-card__name">中華民國心臟學會</div><div class="pf-card__tags"><span class="pf-tag">會員系統</span><span class="pf-tag">投審稿</span></div></div>
+            <span class="pf-card__idx en">01</span>
+            <div class="pf-card__name">中華民國心臟學會</div>
+            <div class="pf-card__url en">apsc-tsoc2026.tw</div>
+            <div class="pf-card__tags"><span class="pf-tag">會員系統</span><span class="pf-tag">投審稿</span><span class="pf-tag">國際研討會</span></div>
           </a>
           <a href="https://www.ot.org.tw" target="_blank" class="pf-card anim">
-            <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://www.ot.org.tw" alt="台灣職能治療學會" loading="lazy"></div>
-            <div class="pf-card__body"><div class="pf-card__url en">ot.org.tw</div><div class="pf-card__name">台灣職能治療學會</div><div class="pf-card__tags"><span class="pf-tag">積分管理</span><span class="pf-tag">期刊投稿</span></div></div>
+            <span class="pf-card__idx en">02</span>
+            <div class="pf-card__name">台灣職能治療學會</div>
+            <div class="pf-card__url en">ot.org.tw</div>
+            <div class="pf-card__tags"><span class="pf-tag">積分管理</span><span class="pf-tag">期刊投稿</span></div>
           </a>
           <a href="https://www.tsh.org.tw" target="_blank" class="pf-card anim">
-            <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://www.tsh.org.tw" alt="台灣高血壓學會" loading="lazy"></div>
-            <div class="pf-card__body"><div class="pf-card__url en">tsh.org.tw</div><div class="pf-card__name">台灣高血壓學會</div><div class="pf-card__tags"><span class="pf-tag">衛教影音</span><span class="pf-tag">活動直播</span></div></div>
+            <span class="pf-card__idx en">03</span>
+            <div class="pf-card__name">台灣高血壓學會</div>
+            <div class="pf-card__url en">tsh.org.tw</div>
+            <div class="pf-card__tags"><span class="pf-tag">衛教影音</span><span class="pf-tag">活動直播</span></div>
           </a>
           <a href="https://www.tpvma.org.tw" target="_blank" class="pf-card anim">
-            <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://www.tpvma.org.tw" alt="臺北市獸醫師公會" loading="lazy"></div>
-            <div class="pf-card__body"><div class="pf-card__url en">tpvma.org.tw</div><div class="pf-card__name">臺北市獸醫師公會</div><div class="pf-card__tags"><span class="pf-tag">會費繳納</span><span class="pf-tag">行事曆</span></div></div>
+            <span class="pf-card__idx en">04</span>
+            <div class="pf-card__name">臺北市獸醫師公會</div>
+            <div class="pf-card__url en">tpvma.org.tw</div>
+            <div class="pf-card__tags"><span class="pf-tag">會費繳納</span><span class="pf-tag">行事曆</span></div>
           </a>
           <a href="https://ber.ed.ntnu.edu.tw" target="_blank" class="pf-card anim">
-            <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://ber.ed.ntnu.edu.tw" alt="師大教育研究集刊" loading="lazy"></div>
-            <div class="pf-card__body"><div class="pf-card__url en">ber.ed.ntnu.edu.tw</div><div class="pf-card__name">師大教育研究集刊</div><div class="pf-card__tags"><span class="pf-tag">期刊系統</span><span class="pf-tag">多語系</span></div></div>
+            <span class="pf-card__idx en">05</span>
+            <div class="pf-card__name">師大教育研究集刊</div>
+            <div class="pf-card__url en">ber.ed.ntnu.edu.tw</div>
+            <div class="pf-card__tags"><span class="pf-tag">期刊系統</span><span class="pf-tag">多語系</span></div>
           </a>
           <a href="https://netzero.sinica.edu.tw" target="_blank" class="pf-card anim">
-            <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://netzero.sinica.edu.tw" alt="中研院淨零科技" loading="lazy"></div>
-            <div class="pf-card__body"><div class="pf-card__url en">netzero.sinica.edu.tw</div><div class="pf-card__name">中研院淨零科技</div><div class="pf-card__tags"><span class="pf-tag">影音專區</span><span class="pf-tag">政策報告</span></div></div>
+            <span class="pf-card__idx en">06</span>
+            <div class="pf-card__name">中研院淨零科技</div>
+            <div class="pf-card__url en">netzero.sinica.edu.tw</div>
+            <div class="pf-card__tags"><span class="pf-tag">影音專區</span><span class="pf-tag">政策報告</span></div>
           </a>
         </div>
       </div>
@@ -1979,28 +1999,40 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
         <p class="subtitle anim">你想要什麼風格就能做什麼風格——客製化的核心價值｜<a href="https://www.iware.com.tw/works.html" target="_blank" style="color:var(--green);">更多案例 &rarr;</a></p>
         <div class="pf-full-grid">
           <a href="https://www.laurel.com.tw" target="_blank" class="pf-card anim">
-            <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://www.laurel.com.tw" alt="桂冠食品" loading="lazy"></div>
-            <div class="pf-card__body"><div class="pf-card__url en">laurel.com.tw</div><div class="pf-card__name">桂冠食品</div><div class="pf-card__tags"><span class="pf-tag">食品</span><span class="pf-tag">電商</span></div></div>
+            <span class="pf-card__idx en">07</span>
+            <div class="pf-card__name">桂冠食品</div>
+            <div class="pf-card__url en">laurel.com.tw</div>
+            <div class="pf-card__tags"><span class="pf-tag">食品</span><span class="pf-tag">電商</span><span class="pf-tag">品牌形象</span></div>
           </a>
           <a href="https://www.yamatoem.com.tw" target="_blank" class="pf-card anim">
-            <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://www.yamatoem.com.tw" alt="大和酵素" loading="lazy"></div>
-            <div class="pf-card__body"><div class="pf-card__url en">yamatoem.com.tw</div><div class="pf-card__name">大和酵素</div><div class="pf-card__tags"><span class="pf-tag">保健食品</span><span class="pf-tag">日式極簡</span></div></div>
+            <span class="pf-card__idx en">08</span>
+            <div class="pf-card__name">大和酵素</div>
+            <div class="pf-card__url en">yamatoem.com.tw</div>
+            <div class="pf-card__tags"><span class="pf-tag">保健食品</span><span class="pf-tag">日式極簡</span></div>
           </a>
           <a href="https://www.lovetowoman.com" target="_blank" class="pf-card anim">
-            <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://www.lovetowoman.com" alt="寵愛女人" loading="lazy"></div>
-            <div class="pf-card__body"><div class="pf-card__url en">lovetowoman.com</div><div class="pf-card__name">寵愛女人</div><div class="pf-card__tags"><span class="pf-tag">精品交易</span><span class="pf-tag">競標系統</span></div></div>
+            <span class="pf-card__idx en">09</span>
+            <div class="pf-card__name">寵愛女人</div>
+            <div class="pf-card__url en">lovetowoman.com</div>
+            <div class="pf-card__tags"><span class="pf-tag">精品交易</span><span class="pf-tag">競標系統</span></div>
           </a>
           <a href="https://allwealth.iware.com.tw/html/" target="_blank" class="pf-card anim">
-            <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://allwealth.iware.com.tw/html/" alt="荃贏全美" loading="lazy"></div>
-            <div class="pf-card__body"><div class="pf-card__url en">allwealth.iware.com.tw</div><div class="pf-card__name">荃贏全美</div><div class="pf-card__tags"><span class="pf-tag">保健</span><span class="pf-tag">品牌官網</span></div></div>
+            <span class="pf-card__idx en">10</span>
+            <div class="pf-card__name">荃贏全美</div>
+            <div class="pf-card__url en">allwealth.iware.com.tw</div>
+            <div class="pf-card__tags"><span class="pf-tag">保健</span><span class="pf-tag">品牌官網</span></div>
           </a>
           <a href="https://www.jordan.com.tw" target="_blank" class="pf-card anim">
-            <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://www.jordan.com.tw" alt="喬登美語" loading="lazy"></div>
-            <div class="pf-card__body"><div class="pf-card__url en">jordan.com.tw</div><div class="pf-card__name">喬登美語</div><div class="pf-card__tags"><span class="pf-tag">教育</span><span class="pf-tag">品牌官網</span></div></div>
+            <span class="pf-card__idx en">11</span>
+            <div class="pf-card__name">喬登美語</div>
+            <div class="pf-card__url en">jordan.com.tw</div>
+            <div class="pf-card__tags"><span class="pf-tag">教育</span><span class="pf-tag">品牌官網</span></div>
           </a>
           <a href="https://www.interior.com.tw" target="_blank" class="pf-card anim">
-            <div class="pf-card__img"><img src="https://image.thum.io/get/width/480/crop/300/https://www.interior.com.tw" alt="室內 interior" loading="lazy"></div>
-            <div class="pf-card__body"><div class="pf-card__url en">interior.com.tw</div><div class="pf-card__name">室內 interior</div><div class="pf-card__tags"><span class="pf-tag">傢俱</span><span class="pf-tag">品牌官網</span></div></div>
+            <span class="pf-card__idx en">12</span>
+            <div class="pf-card__name">室內 interior</div>
+            <div class="pf-card__url en">interior.com.tw</div>
+            <div class="pf-card__tags"><span class="pf-tag">傢俱</span><span class="pf-tag">品牌官網</span></div>
           </a>
         </div>
       </div>
@@ -2084,18 +2116,17 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
   // ═══════════════════════════════════════════
   // EFFECT 3: TEXT SCRAMBLE
   // ═══════════════════════════════════════════
-  const SCRAMBLE_CHARS = '█▓░▒▐▌┃╋※◆■▪▸◈⬡⬢';
+  const SCRAMBLE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
 
   function scrambleText(element, callback) {
     const original = element.textContent;
     const chars = original.split('');
-    // Wrap each char in a span
     element.innerHTML = chars.map((ch, i) =>
       `<span class="scramble-char" data-char="${ch}" data-idx="${i}">${ch === ' ' ? '&nbsp;' : ch}</span>`
     ).join('');
 
     const spans = element.querySelectorAll('.scramble-char');
-    const totalMs = 40 * spans.length + 300; // resolve time budget
+    const totalMs = 70 * spans.length + 500;
 
     spans.forEach((span, i) => {
       const originalChar = chars[i];
@@ -2103,21 +2134,21 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 
       // Scramble phase: cycle random chars
       let scrambleCount = 0;
-      const maxScrambles = 6 + Math.floor(Math.random() * 6);
+      const maxScrambles = 4 + Math.floor(Math.random() * 4);
       const scrambleInterval = setInterval(() => {
         span.textContent = SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
         scrambleCount++;
         if (scrambleCount >= maxScrambles) {
           clearInterval(scrambleInterval);
         }
-      }, 35);
+      }, 55);
 
-      // Resolve after staggered delay
+      // Resolve after staggered delay — slower
       setTimeout(() => {
         clearInterval(scrambleInterval);
         span.textContent = originalChar;
         span.classList.add('resolved');
-      }, 80 + i * 38);
+      }, 150 + i * 65);
     });
 
     if (callback) setTimeout(callback, totalMs);
