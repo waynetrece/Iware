@@ -771,79 +771,138 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
 }
 
 /* ═══════════════════════════════════════════
-   SLIDE 7: PROCESS STEPS
+   SLIDE 7: PROCESS STEPS — CYBERPUNK TIMELINE
    ═══════════════════════════════════════════ */
-.steps-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-top: 2.5rem;
+.process-timeline {
   position: relative;
+  margin-top: 2.5rem;
+  padding-top: 3rem;
 }
 
-.steps-grid::before {
+/* Animated connecting line */
+.process-line {
+  position: absolute;
+  top: 27px;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: rgba(77,175,124,0.15);
+}
+
+.process-line::after {
   content: '';
   position: absolute;
-  top: 28px;
-  left: calc(12.5% + 10px);
-  right: calc(12.5% + 10px);
-  height: 2px;
-  background: var(--border);
+  top: -1px;
+  left: 0;
+  width: 120px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  box-shadow: 0 0 15px var(--green), 0 0 30px rgba(77,175,124,0.4);
+  border-radius: 2px;
+  animation: line-pulse 3s ease-in-out infinite;
 }
 
-.step {
-  text-align: center;
+@keyframes line-pulse {
+  0% { left: -120px; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+.steps-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
   position: relative;
   z-index: 1;
 }
 
-.step__num {
-  width: 48px; height: 48px;
+.step {
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+
+.step__node {
+  width: 56px; height: 56px;
   border-radius: 50%;
-  background: var(--bg-card);
+  background: var(--bg);
   border: 2px solid var(--green);
   display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 1rem;
+  margin: 0 auto 1.25rem;
   font-family: var(--font-en);
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--green);
+  position: relative;
+  box-shadow: var(--neon-shadow);
+  transition: all 0.4s;
+}
+
+.step__node::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(77,175,124,0.2);
+  animation: node-ping 2.5s ease-out infinite;
+}
+
+.step:nth-child(1) .step__node::before { animation-delay: 0s; }
+.step:nth-child(2) .step__node::before { animation-delay: 0.6s; }
+.step:nth-child(3) .step__node::before { animation-delay: 1.2s; }
+.step:nth-child(4) .step__node::before { animation-delay: 1.8s; }
+
+@keyframes node-ping {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+.step:hover .step__node {
+  background: rgba(77,175,124,0.15);
+  box-shadow: var(--neon-shadow-strong);
+  transform: scale(1.1);
 }
 
 .step__title {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
+  white-space: nowrap;
 }
 
 .step__desc {
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   color: var(--text-light);
   line-height: 1.5;
   margin-bottom: 0.75rem;
+  white-space: nowrap;
 }
 
 .step__list {
   list-style: none;
-  text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.35rem;
 }
 
 .step__list li {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--text-muted);
-  padding-left: 0.8rem;
-  position: relative;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
 }
 
 .step__list li::before {
-  content: '✓';
-  position: absolute;
-  left: 0;
-  color: var(--green);
-  font-size: 0.65rem;
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px rgba(77,175,124,0.5);
+  flex-shrink: 0;
 }
 
 /* ═══════════════════════════════════════════
@@ -1348,30 +1407,33 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.3; }
         <h2 class="title anim">專案合作流程</h2>
         <div class="divider anim"></div>
         <p class="subtitle anim">從需求到上線，每個階段都有清楚的交付與確認點</p>
-        <div class="steps-grid">
-          <div class="step anim">
-            <div class="step__num en">01</div>
-            <h3 class="step__title">瞭解需求</h3>
-            <p class="step__desc">深入了解品牌定位、目標客群與競爭分析</p>
-            <ul class="step__list"><li>需求訪談紀錄</li><li>競品分析報告</li><li>專案範圍確認</li></ul>
-          </div>
-          <div class="step anim">
-            <div class="step__num en">02</div>
-            <h3 class="step__title">規劃確認</h3>
-            <p class="step__desc">網站架構規劃、功能清單確認、報價簽約</p>
-            <ul class="step__list"><li>網站架構 Sitemap</li><li>功能規格書</li><li>報價與時程表</li></ul>
-          </div>
-          <div class="step anim">
-            <div class="step__num en">03</div>
-            <h3 class="step__title">設計製作</h3>
-            <p class="step__desc">UI 視覺設計、前後端開發、響應式切版</p>
-            <ul class="step__list"><li>UI 設計稿確認</li><li>前端切版與互動</li><li>後端功能開發</li></ul>
-          </div>
-          <div class="step anim">
-            <div class="step__num en">04</div>
-            <h3 class="step__title">測試驗收</h3>
-            <p class="step__desc">功能測試、內容上稿、教育訓練、正式上線</p>
-            <ul class="step__list"><li>品質測試報告</li><li>後台操作教學</li><li>上線後持續維護</li></ul>
+        <div class="process-timeline anim">
+          <div class="process-line"></div>
+          <div class="steps-row">
+            <div class="step">
+              <div class="step__node en">01</div>
+              <h3 class="step__title">瞭解需求</h3>
+              <p class="step__desc">深入了解品牌定位與目標客群</p>
+              <ul class="step__list"><li>需求訪談紀錄</li><li>競品分析報告</li><li>專案範圍確認</li></ul>
+            </div>
+            <div class="step">
+              <div class="step__node en">02</div>
+              <h3 class="step__title">規劃確認</h3>
+              <p class="step__desc">架構規劃、功能確認、報價簽約</p>
+              <ul class="step__list"><li>網站架構 Sitemap</li><li>功能規格書</li><li>報價與時程表</li></ul>
+            </div>
+            <div class="step">
+              <div class="step__node en">03</div>
+              <h3 class="step__title">設計製作</h3>
+              <p class="step__desc">UI 設計、前後端開發、RWD 切版</p>
+              <ul class="step__list"><li>UI 設計稿確認</li><li>前端切版與互動</li><li>後端功能開發</li></ul>
+            </div>
+            <div class="step">
+              <div class="step__node en">04</div>
+              <h3 class="step__title">測試驗收</h3>
+              <p class="step__desc">功能測試、教育訓練、正式上線</p>
+              <ul class="step__list"><li>品質測試報告</li><li>後台操作教學</li><li>上線後持續維護</li></ul>
+            </div>
           </div>
         </div>
       </div>
